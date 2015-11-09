@@ -3,7 +3,7 @@
 This is an Angular 1.X / Bootstrap 3 browser application to be used as a front-end for this GitHub back-end project: ["JEE Kickstart 1  Web Application"](https://github.com/giraone/pms-sample-jee-01).
 
 ## Requirements
-* [NodeJS](http://nodejs.org) NodeJS
+* [NodeJS](http://nodejs.org)
 * `npm i -g node-static` Installation of a web server
 * Git-Client (GitHub for Desktop)
 * WebStorm 10+ or any other suitable IDE 
@@ -29,7 +29,7 @@ The gulp task will build the browser app. To get it working, please do the follo
 * Combine front-edn and back-end: just copy the content of the *dist* folder to the *src/webapp* folder of the back-end project and put it on an application server.
 
 ## Usage
-* If you don't want to use the REST API hosted on *Open Shift*, you can run the server by yourself by starting your JEE application locally and change [change the url](https://github.com/giraone/jee-kickstart01/blob/master/src/PmsSamleApp/app/init.js#L16). The server will run on port 8080.
+* If you don't want to use the REST API hosted on *Open Shift*, you can run the server by yourself by starting your JEE application locally and change [change the url](src/PmsSamleApp/app/init.js#L16). The server will run on port 8080.
 
 ## Supported platforms
 * Any modern web browser (Chrome, Firefox, IE11, Edge, Safari)
