@@ -4,6 +4,7 @@
     app.module.config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('dashboard', getState('dashboard', '/'))
+            .state('about', getState('about', '/about'))
             .state('testPage', getState('testPage', '/testPage'))
             .state('costCenters', getState('costCenterList', '/costCenters'))
             .state('costCenters.detail', getState('costCenterDetail', '/:costCenterId'))

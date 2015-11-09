@@ -52,20 +52,27 @@
             promise
                 .then(function (costCenterId) {
                     ngNotify.set($translate.instant(successMessage), 'success');
-
+                    // Stay and reload
+                    /*
                     if (!$stateParams.costCenterId) {
-                        $scope.costCenter.id = costCenterId;
+                        $scope.costCenter.oid = costCenterId;
                         $state.go('.', {
                             costCenterId: costCenterId
                         }, {
                             reload: false,
                             notify: false
                         });
+
                     }
+                    */
+                    // Back to list
+                    $log.debug('costCenterDetailController.save BACK TO LIST');
+                    $state.go('costCenters');
                 }, showErrorNotification);
         };
 
         $scope.cancel = function () {
+            //$log.debug('costCenterDetailController.cancel');
             $state.go('costCenters');
         }
 

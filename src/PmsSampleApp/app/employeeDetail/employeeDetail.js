@@ -23,32 +23,22 @@
         // We cannot use $scope.employee directly, because on an entity update, the selection will not be made (1)
         $scope.employeeCostCenterOid = $scope.employee && $scope.employee.costCenter ? $scope.employee.costCenter.oid : null;
 
-        $scope.genders = ['U', 'M', 'I', 'I'];
+        $scope.genders = ['U', 'M', 'F', 'I'];
 
-        $scope.nationalities = ['DEU', 'ITA', 'USA'];
+        // ISO 3166-1 alpha-3 country codes
+        $scope.nationalities = ['DEU', 'AUT', 'CHE', 'ITA', 'USA'];
 
         CostCentersResource.listAll().$promise.then(function (result) {
             $scope.costCenters = result;
         });
 
-        // We cannot ... part (2), therefore we have to watch
-        $scope.$watch(
-            "$scope.employeeCostCenterOid",
-            function handleCostCenterOidChange (newValue, oldValue) {
-                $log.debug('handleCostCenterOidChange newValue=' + newValue);
-                if ($scope.employee.costCenter)
-                    $scope.employee.costCenter.oid = newValue;
-                else
-                    $scope.employee.costCenter = { "oid": newValue };
-            }
-        );
-
         function init() {
             if ($stateParams.employeeId) {
 
                 EmployeesResource.findById($stateParams.employeeId).$promise.then(function (result) {
-                    $log.debug('employeeDetailController.findById OK');
                     $scope.employee = result;
+                    // Now keep the redundant costCenter.oid attribute in sync!
+                    $scope.employeeCostCenterOid = $scope.employee.costCenter.oid;
                 }, function (error) {
                     $log.debug('employeeDetailController.findById ERROR');
                     flash.setMessage({
@@ -65,6 +55,9 @@
                 return;
             }
 
+            // Now keep the redundant costCenter.oid attribute in sync!
+            $scope.employee.costCenter.oid = $scope.employeeCostCenterOid;
+
             var promise;
             var successMessage;
             if ($stateParams.employeeId) {
@@ -79,9 +72,10 @@
             promise
                 .then(function (employeeId) {
                     ngNotify.set($translate.instant(successMessage), 'success');
-
+                    // Stay and reload
+                    /*
                     if (!$stateParams.employeeId) {
-                        $scope.employee.id = employeeId;
+                        $scope.employee.oid = employeeId;
                         $state.go('.', {
                             employeeId: employeeId
                         }, {
@@ -89,10 +83,15 @@
                             notify: false
                         });
                     }
+                    */
+                    // Back to list
+                    $log.debug('employeeDetailController.save BACK TO LIST');
+                    $state.go('employees');
                 }, showErrorNotification);
         };
 
         $scope.cancel = function () {
+            //$log.debug('employeeDetailController.cancel');
             $state.go('employees');
         }
 

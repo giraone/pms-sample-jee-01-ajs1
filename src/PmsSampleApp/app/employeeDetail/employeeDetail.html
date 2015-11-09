@@ -43,7 +43,7 @@
                               class="form-control" required
                               placeholder="{{ 'employeeDetails.dateOfBirth.placeholder' | translate }}"></date>
                         <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$valid, 'glyphicon-remove': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$invalid}"></span>
-                        <span class="help-block error" ng-show="employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$error.dateFormat">does not match format "yyyy-MM-dd" (e.g. 2013-12-01)</span>
+                        <span class="help-block error" ng-show="employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$error.dateFormat" translate="globals.dateFormatMediumInValid"></span>
                     </div>
                     <div class="form-group" ng-class="{'has-success': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$valid, 'has-error': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$invalid}">
                         <label for="nationalityCode" translate="employeeDetails.nationalityCode.label" class="control-label"></label>
@@ -59,7 +59,7 @@
                               class="form-control" required
                               placeholder="{{ 'employeeDetails.dateOfEntry.placeholder' | translate }}"></date>
                         <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$valid, 'glyphicon-remove': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$invalid}"></span>
-                        <span class="help-block error" ng-show="employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$error.dateFormat">does not match format "yyyy-MM-dd" (e.g. 2013-12-01)</span>
+                        <span class="help-block error" ng-show="employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$error.dateFormat" translate="globals.dateFormatMediumInValid"></span>
                     </div>
                     <div class="form-group" ng-class="{'has-success': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$valid, 'has-error': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$invalid}">
                         <label for="costCenter" translate="employeeDetails.costCenter.label" class="control-label"></label>

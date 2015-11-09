@@ -25,7 +25,7 @@
 
         function init() {
             $scope.hasError = false;
-            $scope.predicate = 'oid';
+            $scope.predicate = 'identification';
             $scope.reverse = false;
             $scope.costCenters = null;
 

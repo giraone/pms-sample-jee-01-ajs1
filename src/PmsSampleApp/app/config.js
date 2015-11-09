@@ -14,7 +14,10 @@
                 suffix: '.json'
             });
             $translateProvider.preferredLanguage('de-DE');
-            $translateProvider.useSanitizeValueStrategy('sanitize');
+            // TODO: This leads to corrupt "umlauts", when using stuff like
+            // ng-options="v as ('employeeDetails.nationalityCode.value_' + v) | translate for v in nationalities"
+            // $translateProvider.useSanitizeValueStrategy('sanitize');
+            $translateProvider.useSanitizeValueStrategy('escapeParameters');
 
             // Configure logging
             $logProvider.debugEnabled = true;

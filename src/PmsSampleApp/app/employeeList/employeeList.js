@@ -25,12 +25,11 @@
 
         function init() {
             $scope.hasError = false;
-            $scope.predicate = 'oid';
+            $scope.predicate = 'personnelNumber';
             $scope.reverse = false;
             $scope.costCenters = null;
 
             EmployeesResource.listAll().$promise.then(function(result) {
-                $log.debug('employeeListController.listAll OK');
                 $scope.hasError = false;
                 $scope.employees = result;
             }, function (error) {

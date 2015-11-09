@@ -1,6 +1,6 @@
-# Sample RIA frontend application based on Angular 1.4 and Bootstrap 3
+# Sample browser application based on Angular 1.4 and Bootstrap 3
 
-This is an Angular 1.X browser application to be used as a frontend for this ["JEE Kickstart 1  Web Application"](https://github.com/giraone/pms-sample-jee-01).
+This is an Angular 1.X / Bootstrap 3 browser application to be used as a front-end for this GitHub back-end project: ["JEE Kickstart 1  Web Application"](https://github.com/giraone/pms-sample-jee-01).
 
 ## Requirements
 * [NodeJS](http://nodejs.org) NodeJS
@@ -12,7 +12,6 @@ This is an Angular 1.X browser application to be used as a frontend for this ["J
 * Download and install [node.js](https://nodejs.org/)
 * Download and install an editor of your choice (free: [Visual Studio Code](https://code.visualstudio.com/); commercial: [WebStorm](https://www.jetbrains.com/webstorm/))
  
-
 ## Building
 The gulp task will build the browser app. To get it working, please do the following:
 
@@ -26,11 +25,11 @@ The gulp task will build the browser app. To get it working, please do the follo
     * Run `gulp dist:default` to build the web app in (and use `static` within the dist/ folder to explore the app).
 * Release Mode: Use the following gulp tasks to build the apps in release mode
     * Run `gulp build:all:release` to build all apps in debug mode.
-    * Run `gulp dist:release` to build the web app in (and use `static` within the dist/ folder to explore the app).
+    * Run `gulp dist:release` to build the web app in (and use `static` within the dist/ folder to explore the app). This will also use `dist:uglify:js` and `dist:uglify:css`.
+* Combine front-edn and back-end: just copy the content of the *dist* folder to the *src/webapp* folder of the back-end project and put it on an application server.
 
 ## Usage
-* To login just use username = password (eg. user: test, password: test). 
-* If you don't want to use the Web API hosted on *Open Shift*, you can run the server by yourself by starting your JEE application locally and change [change the url](https://github.com/giraone/jee-kickstart01/blob/master/src/PmsSamleApp/app/init.js#L16). The server will run on port 8080.
+* If you don't want to use the REST API hosted on *Open Shift*, you can run the server by yourself by starting your JEE application locally and change [change the url](https://github.com/giraone/jee-kickstart01/blob/master/src/PmsSamleApp/app/init.js#L16). The server will run on port 8080.
 
 ## Supported platforms
 * Any modern web browser (Chrome, Firefox, IE11, Edge, Safari)
@@ -51,7 +50,8 @@ The gulp task will build the browser app. To get it working, please do the follo
   * [Font Awesome](https://fortawesome.github.io/Font-Awesome/), free icon font
   * [jQuery](https://jquery.com/), JavaScript library required for AdminLTE
 * [FastClick](https://github.com/ftlabs/fastclick), eliminates the [infamous 300 ms lag on touch devices](http://developer.telerik.com/featured/300-ms-click-delay-ios-8/)
-* [Modernizr](https://modernizr.com), feature detection used for date/time fields
+* [Modernizr](https://modernizr.com), feature detection used for date/time fields - *Version 2.8.3*
+* [Moment.js](http://momentjs.com/), parse, validate, manipulate, and display dates in JavaScript - *Version 2.10.6*
 
 ## What does this sample show?
 * How to call REST (GET, POST, PUT) services using factories build with Angular's `$resource` service from *ngResource*.

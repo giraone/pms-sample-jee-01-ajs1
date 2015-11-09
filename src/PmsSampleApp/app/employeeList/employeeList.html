@@ -13,7 +13,6 @@
         <table class="table table-condensed table-striped table-bordered table-hover" ng-if="employees">
             <thead>
             <tr>
-                <th ng-click="orderBy('oid')"><span translate="employeeList.oid"></span> <span ng-show="predicate == 'oid'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
                 <th ng-click="orderBy('personnelNumber')"><span translate="employeeList.personnelNumber"></span> <span ng-show="predicate == 'personnelNumber'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
                 <th ng-click="orderBy('name')"><span translate="employeeList.name"></span> <span ng-show="predicate == 'name'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
                 <th ng-click="orderBy('dateOfBirth')"><span translate="employeeList.dateOfBirth"></span> <span ng-show="predicate == 'dateOfBirth'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
@@ -22,10 +21,9 @@
             </thead>
             <tbody>
                 <tr ng-repeat="employee in employees | orderBy:predicate:reverse" ui-sref="employees.detail({employeeId: employee.oid})">
-                    <td>{{employee.oid}}</td>
                     <td>{{employee.personnelNumber}}</td>
                     <td>{{employee.lastName}}, {{employee.firstName}}</td>
-                    <td>{{employee.dateOfBirth | date:'shortDate'}}</td>
+                    <td>{{ 'globals.dateFormatMedium' | translate:{date:employee.dateOfBirth} }}</td>
                     <td>{{employee.costCenter.identification}}</td>
                 </tr>
             </tbody>

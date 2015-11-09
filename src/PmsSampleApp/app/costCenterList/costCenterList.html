@@ -13,14 +13,12 @@
         <table class="table table-condensed table-striped table-bordered table-hover" ng-if="costCenters">
             <thead>
                 <tr>
-                    <th ng-click="orderBy('oid')"><span translate="costCenterList.oid"></span> <span ng-show="predicate == 'oid'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
                     <th ng-click="orderBy('identification')"><span translate="costCenterList.identification"></span> <span ng-show="predicate == 'identification'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
                     <th ng-click="orderBy('description')"><span translate="costCenterList.description"></span> <span ng-show="predicate == 'description'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="costCenter in costCenters | orderBy:predicate:reverse" ui-sref="costCenters.detail({costCenterId: costCenter.oid})">
-                    <td>{{costCenter.oid}}</td>
                     <td>{{costCenter.identification}}</td>
                     <td>{{costCenter.description}}</td>
                 </tr>
