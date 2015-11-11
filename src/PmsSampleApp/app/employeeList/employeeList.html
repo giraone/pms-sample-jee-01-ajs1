@@ -14,9 +14,9 @@
             <thead>
             <tr>
                 <th ng-click="orderBy('personnelNumber')"><span translate="employeeList.personnelNumber"></span> <span ng-show="predicate == 'personnelNumber'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
-                <th ng-click="orderBy('name')"><span translate="employeeList.name"></span> <span ng-show="predicate == 'name'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
+                <th ng-click="orderBy('lastName')"><span translate="employeeList.name"></span> <span ng-show="predicate == 'lastName'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
                 <th ng-click="orderBy('dateOfBirth')"><span translate="employeeList.dateOfBirth"></span> <span ng-show="predicate == 'dateOfBirth'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
-                <th ng-click="orderBy('costCenter')"><span translate="employeeList.costCenter"></span> <span ng-show="predicate == 'costCenter'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
+                <th ng-click="orderBy('costCenter.identification')"><span translate="employeeList.costCenter"></span> <span ng-show="predicate == 'costCenter.identification'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
             </tr>
             </thead>
             <tbody>

@@ -56,7 +56,10 @@
             }
 
             // Now keep the redundant costCenter.oid attribute in sync!
-            $scope.employee.costCenter.oid = $scope.employeeCostCenterOid;
+            if ($scope.employee.costCenter)
+                $scope.employee.costCenter.oid = $scope.employeeCostCenterOid;
+            else
+                $scope.employee.costCenter = { "oid": $scope.employeeCostCenterOid };
 
             var promise;
             var successMessage;

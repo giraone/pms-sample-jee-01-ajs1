@@ -1,7 +1,7 @@
 'use strict';
 
 //var DATE_REGEX = /^([0-2][0-9]{3})\-([0-1][0-9])\-([0-3][0-9])$/;
-angular.module('pms-sample').directive('date', function ($parse, dateFilter, $translate) {
+angular.module('pms-sample').directive('date', function ($parse, dateFilter, $translate, $log) {
     return {
         restrict: "E",
         replace: true,
@@ -29,6 +29,7 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
                 if (!ngModelCtrl) return;
 
                 var dateParser = function (value) {
+                    $log.debug("dateParserN " + value);
                     var date;
                     if (value) {
                         date = new Date(Date.parse(value));
@@ -38,9 +39,10 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
                     return date;
                 }
                 var dateFormatter = function (value) {
+                    $log.debug("dateFormatterN " + value);
                     if (value) {
                         //var date = dateFilter(value, "yyyy-MM-dd");
-                        var date = moment(value).format(dateOutput);
+                        var date = moment(value).format("YYYY-MM-DD");
                         return date;
                     }
                     return;
@@ -64,6 +66,7 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
                 if (!ngModelCtrl) return;
 
                 var dateParser = function (value) {
+                    $log.debug("dateParserE " + value);
                     if (value) {
                         // Parse using moment.js
                         var date = moment(value, dateInput);
@@ -87,6 +90,7 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
                     return;
                 }
                 var dateFormatter = function (value) {
+                    $log.debug("dateParserE " + value);
                     if (value) {
                         //var date = dateFilter(value, "yyyy-MM-dd");
                         var date = moment(value).format(dateOutput);
@@ -109,6 +113,7 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
                 }
             }
 
+            $log.debug("Modernizr inputtypes.date=" + Modernizr.inputtypes["date"]);
             if (Modernizr.inputtypes["date"]) {
                 return nativeLinker;
             } else {
