@@ -1,17 +1,18 @@
 {
-  "name": "pms-sample",
+  "name": "pms-sample-ajs1",
   "version": "1.0.0",
-  "description": "Sample for demonstrating an Angular/Bootstrap based UI for a CRUD application.",
+  "description": "Sample for demonstrating an AngularJS 1 / Bootstrap 3 based UI for a CRUD application.",
   "main": "gulpfile.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/giraone/pms-sample1.git"
+    "url": "git+https://github.com/giraone/pms-sample1-jee-01-ajs1.git"
   },
   "author": "GiraOne",
+  "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/giraone/pms-sample1/issues"
+    "url": "https://github.com/giraone/pms-sample1-jee-01-ajs1/issues"
   },
-  "homepage": "https://github.com/giraone/pms-sample1#readme",
+  "homepage": "https://github.com/giraone/pms-sample1-jee-01-ajs1#readme",
   "devDependencies": {
     "del": "^2.0.2",
     "event-stream": "^3.3.1",
