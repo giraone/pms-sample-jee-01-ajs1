@@ -11,16 +11,15 @@
                     <div class="form-group has-feedback" ng-show="!costCenter.oid" ng-class="{'has-success': costCenterDetailForm.identification.$dirty && costCenterDetailForm.identification.$valid, 'has-error': costCenterDetailForm.identification.$dirty && costCenterDetailForm.identification.$invalid}">
                         <label for="identification" translate="costCenterDetails.identification" class="control-label" ></label>
                         <input id="identification" name="identification" ng-model="costCenter.identification"
-                               class="form-control" type="text" required ng-minlength="1" ng-maxlength="20"
-                               placeholder="{{ 'costCenterDetails.identification_placeholder' | translate }}" bs-tooltip="'Enter your email address'"
-                               data-trigger="focus">
+                               class="form-control" type="text" required ng-minlength="1" ng-maxlength="20" data-trigger="focus"
+                               placeholder="{{ 'costCenterDetails.identification_placeholder' | translate }}" />
                         <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': costCenterDetailForm.identification.$dirty && costCenterDetailForm.identification.$valid, 'glyphicon-remove': costCenterDetailForm.identification.$dirty && costCenterDetailForm.identification.$invalid}"></span>
                     </div>
                     <div class="form-group" ng-class="{'has-success': costCenterDetailForm.description.$dirty && costCenterDetailForm.description.$valid, 'has-error': costCenterDetailForm.description.$dirty && costCenterDetailForm.description.$invalid}">
                         <label for="description" translate="costCenterDetails.description" class="control-label" ></label>
                         <input id="description" name="description" ng-model="costCenter.description"
-                               class="form-control" type="text" required ng-minlength="1" ng-maxlength="256"
-                               placeholder="{{ 'costCenterDetails.description_placeholder' | translate }}" bs-tooltip="'Enter your description'" />
+                               class="form-control" type="text" required ng-minlength="1" ng-maxlength="256" data-trigger="focus"
+                               placeholder="{{ 'costCenterDetails.description_placeholder' | translate }}" />
                         <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': costCenterDetailForm.description.$dirty && costCenterDetailForm.description.$valid, 'glyphicon-remove': costCenterDetailForm.description.$dirty && costCenterDetailForm.description.$invalid}"></span>
                     </div>
                 </div>
