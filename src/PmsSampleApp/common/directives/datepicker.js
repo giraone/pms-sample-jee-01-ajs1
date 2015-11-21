@@ -66,12 +66,12 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
                 if (!ngModelCtrl) return;
 
                 var dateParser = function (value) {
-                    $log.debug("dateParserE " + value);
                     if (value) {
                         // Parse using moment.js
-                        var date = moment(value, dateInput);
+                        var date = moment(value, dateInput, /* strict parsing */ true);
                         if (date.isValid())
                         {
+                            $log.debug("dateParserE " + value + " = valid for \"" + dateInput + "\"");
                             ngModelCtrl.$setValidity("dateFormat", true);
                             return date;
                         /*
@@ -83,6 +83,7 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
                             return date;
                         */
                         } else {
+                            $log.debug("dateParserE " + value + " = invalid for \"" + dateInput + "\"");
                             ngModelCtrl.$setValidity("dateFormat", false);
                             return;
                         }
