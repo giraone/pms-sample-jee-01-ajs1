@@ -3,21 +3,20 @@
 This is an Angular 1.X / Bootstrap 3 browser application to be used as a front-end for this GitHub back-end project: ["JEE Kickstart 1  Web Application"](https://github.com/giraone/pms-sample-jee-01).
 
 ## Requirements
-* [NodeJS](http://nodejs.org)
-* `npm i -g node-static` Installation of a web server
+* [NodeJS](http://nodejs.org) *v4.x.x*
+* [NPM](https://www.npmjs.com/) *npm 3.x.x.*
 * Git-Client (GitHub for Desktop)
 * WebStorm 10+ or any other suitable IDE 
 
 ## Setup
-* Download and install [node.js](https://nodejs.org/)
+* Download and install *node.js* and *npm*
 * Download and install an editor of your choice (free: [Visual Studio Code](https://code.visualstudio.com/); commercial: [WebStorm](https://www.jetbrains.com/webstorm/))
  
 ## Building
 The gulp task will build the browser app. To get it working, please do the following:
-
-* Only after cloning the repo: `npm i` within the root folder of this repository
+* Only after cloning the repo: `npm install` within the root folder of this repository. Use `npm run reinstall`, if you get an error.
 * Live reloads:
-  * Run `gulp dev:livereload` to start a live server on localhost:9999 (see `gulpTasks/dev.js` for the port settings), which is best when developing the app.
+  * Run `gulp dev:livereload` to start a live server on localhost:9998 (see `gulpTasks/dev.js` for the port settings), which is best when developing the app.
   * Run `gulp dev:watch` to build automatically all changes.
 * Run `gulp` to build all apps in release mode (will execute `gulp build:all:release`)
 * Debug Mode: Use the following gulp tasks to build the apps in debug mode
@@ -26,7 +25,7 @@ The gulp task will build the browser app. To get it working, please do the follo
 * Release Mode: Use the following gulp tasks to build the apps in release mode
     * Run `gulp build:all:release` to build all apps in debug mode.
     * Run `gulp dist:release` to build the web app in (and use `static` within the dist/ folder to explore the app). This will also use `dist:uglify:js` and `dist:uglify:css`.
-* Combine front-edn and back-end: just copy the content of the *dist* folder to the *src/webapp* folder of the back-end project and put it on an application server.
+* Combine front-end and back-end: just copy the content of the *dist* folder to the *src/webapp* folder of the back-end project and put it on an application server.
 
 ## Usage
 * If you don't want to use the REST API hosted on *Open Shift*, you can run the server by yourself by starting your JEE application locally and change [change the url](src/PmsSamleApp/app/init.js#L16). The server will run on port 8080.
