@@ -13,21 +13,11 @@
 
         init();
 
-        $scope.orderBy = function(predicateName) {
-            if (predicateName == $scope.predicate) {
-                $scope.reverse = !$scope.reverse;
-            }
-            else {
-                $scope.predicate = predicateName;
-                $scope.reverse = false;
-            }
-        };
-
         function init() {
             $scope.hasError = false;
             $scope.predicate = 'identification';
             $scope.reverse = false;
-            $scope.costCenters = null;
+            $scope.costCenters = [];
 
             CostCentersResource.listAll().$promise.then(function(result) {
                 $log.debug('costCenterListController.listAll OK');
@@ -39,6 +29,16 @@
                 $scope.costCenters = [];
             });
         }
+
+        $scope.orderBy = function(predicateName) {
+            if (predicateName == $scope.predicate) {
+                $scope.reverse = !$scope.reverse;
+            }
+            else {
+                $scope.predicate = predicateName;
+                $scope.reverse = false;
+            }
+        };
     }
 
     app.module.controller('costCenterListController', costCenterListController);
