@@ -4,7 +4,7 @@
 
     angular.module('pms-sample').factory('EmployeesResource', employeesResource);
 
-    function employeesResource(projectConfig, $log, $resource) {
+    function employeesResource(projectConfig, $log, $resource, measure) {
 
         var baseUrl = projectConfig.baseUrl + '/employees';
         var version = "1.0";
@@ -17,6 +17,8 @@
             deleteById: deleteById,
             summary: summary
         };
+        var paramDef = {top:'@top', skip:'@skip',filter:'@filter'};
+
         return service;
 
         function getVersion() {
@@ -32,11 +34,17 @@
             });
             return result;
         }
-        function listAll() {
-            $log.debug('EmployeesResource.listAll');
-            var r = $resource(baseUrl);
-            var result = r.query(function() {
-                $log.debug('EmployeesResource.listAll result.length=' + result.length);
+        function listAll(top, skip, filter) {
+            $log.debug('EmployeesResource.listAll top=' + top + ',skip=' + skip + ',filter=' + filter);
+            var start = measure.now();
+
+            var queryParam = {};
+            if (top) queryParam.top = top;
+            if (skip) queryParam.skip = skip;
+            if (filter) queryParam.filter = filter;
+            var r = $resource(baseUrl, paramDef);
+            var result = r.query(queryParam, function() {
+                $log.debug('EmployeesResource.listAll result.length=' + result.length + ", time=" + measure.diffText(start));
                 return result;
             });
             return result;
