@@ -1,84 +1,115 @@
 <div class="row">
-    <div class="col-md-12">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">{{ 'employeeDetails.title' | translate }} <span ng-bind="employee.personnelNumber"></span></h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form role="form" name="employeeDetailForm" ng-submit="save()">
-                <div class="box-body">
-                    <div class="form-group" ng-show="!employee.oid" ng-class="{'has-success': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$valid, 'has-error': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}">
-                        <label for="personnelNumber" translate="employeeDetails.personnelNumber.label" class="control-label" ></label>
-                        <input id="personnelNumber" name="personnelNumber" ng-model="employee.personnelNumber"
-                               class="form-control" type="text" required ng-minlength="1" ng-maxlength="20"
-                               placeholder="{{ 'employeeDetails.personnelNumber.placeholder' | translate }}" bs-tooltip="'Enter your personnelNumber'" />
-                        <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
-                    </div>
-                    <div class="form-group" ng-class="{'has-success': employeeDetailForm.lastName.$dirty && employeeDetailForm.lastName.$valid, 'has-error': employeeDetailForm.lastName.$dirty && employeeDetailForm.lastName.$invalid}">
-                        <label for="lastName" translate="employeeDetails.lastName.label" class="control-label" ></label>
-                        <input id="lastName" name="lastName" ng-model="employee.lastName"
-                               class="form-control" type="text" required ng-minlength="1" ng-maxlength="20"
-                               placeholder="{{ 'employeeDetails.lastName.placeholder' | translate }}" bs-tooltip="'Enter your lastName'" />
-                        <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.lastName.$dirty && employeeDetailForm.lastName.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
-                    </div>
-                    <div class="form-group" ng-class="{'has-success': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$valid, 'has-error': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$invalid}">
-                        <label for="firstName" translate="employeeDetails.firstName.label" class="control-label" ></label>
-                        <input id="firstName" name="firstName" ng-model="employee.firstName"
-                               class="form-control" type="text" required ng-minlength="1" ng-maxlength="20"
-                               placeholder="{{ 'employeeDetails.firstName.placeholder' | translate }}" bs-tooltip="'Enter your firstName'" />
-                        <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
-                    </div>
-                    <div class="form-group" ng-class="{'has-success': employeeDetailForm.gender.$dirty && employeeDetailForm.gender.$valid, 'has-error': employeeDetailForm.gender.$dirty && employeeDetailForm.gender.$invalid}">
-                        <label for="gender" translate="employeeDetails.gender.label" class="control-label"></label>
-                        <select id="gender" name="gender" ng-model="employee.gender"
-                                class="form-control" ng-options="v as ('employeeDetails.gender.value_' + v) | translate for v in genders" required >
-                            <option value="" translate="employeeDetails.gender.placeholder"></option>
-                        </select>
-                        <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
-                    </div>
-                    <div class="form-group" ng-class="{'has-success': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$valid, 'has-error': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$invalid}">
-                        <label for="dateOfBirth" translate="employeeDetails.dateOfBirth.label" class="control-label"></label>
-                        <date id="dateOfBirth" name="dateOfBirth" ng-model="employee.dateOfBirth"
-                              class="form-control" required
-                              placeholder="{{ 'employeeDetails.dateOfBirth.placeholder' | translate }}"></date>
-                        <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$valid, 'glyphicon-remove': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$invalid}"></span>
-                        <span class="help-block error" ng-show="employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$error.dateFormat" translate="globals.dateFormatMediumInValid"></span>
-                    </div>
-                    <div class="form-group" ng-class="{'has-success': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$valid, 'has-error': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$invalid}">
-                        <label for="nationalityCode" translate="employeeDetails.nationalityCode.label" class="control-label"></label>
-                        <select id="nationalityCode" name="nationalityCode" ng-model="employee.nationalityCode"
-                                class="form-control" ng-options="v as ('employeeDetails.nationalityCode.value_' + v) | translate for v in nationalities" required >
-                            <option value="" translate="employeeDetails.nationalityCode.placeholder"></option>
-                        </select>
-                        <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$valid, 'glyphicon-remove': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$invalid}"></span>
-                    </div>
-                    <div class="form-group" ng-class="{'has-success': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$valid, 'has-error': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$invalid}">
-                        <label for="dateOfEntry" translate="employeeDetails.dateOfEntry.label" class="control-label"></label>
-                        <date id="dateOfEntry" name="dateOfEntry" ng-model="employee.dateOfEntry"
-                              class="form-control" required
-                              placeholder="{{ 'employeeDetails.dateOfEntry.placeholder' | translate }}"></date>
-                        <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$valid, 'glyphicon-remove': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$invalid}"></span>
-                        <span class="help-block error" ng-show="employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$error.dateFormat" translate="globals.dateFormatMediumInValid"></span>
-                    </div>
-                    <div class="form-group" ng-class="{'has-success': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$valid, 'has-error': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$invalid}">
-                        <label for="costCenter" translate="employeeDetails.costCenter.label" class="control-label"></label>
-                        <select id="costCenter" name="costCenter" ng-model="employeeCostCenterOid"
-                                class="form-control" ng-options="costCenter.oid as (costCenter.identification + ' - ' + costCenter.description) for costCenter in costCenters" required >
-                            <option value="" translate="employeeDetails.costCenter.placeholder"></option>
-                        </select>
-                        <span class="glyphicon form-control-feedback" ng-class="{'glyphicon-ok': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$valid, 'glyphicon-remove': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$invalid}"></span>
-                    </div>
-                </div>
-                <!-- /.box-body -->
-
-                <div class="box-footer">
-                    <button type="reset" class="btn" translate="formCommon.cancel" ng-click="cancel()"></button>
-                    <button type="submit" class="btn btn-primary pull-right" translate="formCommon.save"
-                            ng-disabled="employeeDetailForm.$invalid || employeeDetailForm.$pristine"></button>
-                </div>
-            </form>
+  <div class="col-md-12">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">{{ 'employeeDetails.title' | translate }} <span ng-bind="employee.personnelNumber"></span>
+        </h3>
+      </div>
+      <!-- /.box-header -->
+      <!-- form start -->
+      <form role="form" name="employeeDetailForm" ng-submit="save()">
+        <div class="box-body">
+          <div class="form-group" ng-show="!employee.oid"
+               ng-class="{'has-success': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$valid, 'has-error': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}">
+            <label for="personnelNumber" translate="employeeDetails.personnelNumber.label"
+                   class="control-label"></label>
+            <input id="personnelNumber" name="personnelNumber" ng-model="employee.personnelNumber"
+                   class="form-control" type="text" required ng-minlength="1" ng-maxlength="20"
+                   placeholder="{{ 'employeeDetails.personnelNumber.placeholder' | translate }}"
+                   bs-tooltip="'Enter your personnelNumber'"/>
+            <span class="glyphicon form-control-feedback"
+                  ng-class="{'glyphicon-ok': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-success': employeeDetailForm.lastName.$dirty && employeeDetailForm.lastName.$valid, 'has-error': employeeDetailForm.lastName.$dirty && employeeDetailForm.lastName.$invalid}">
+            <label for="lastName" translate="employeeDetails.lastName.label" class="control-label"></label>
+            <input id="lastName" name="lastName" ng-model="employee.lastName"
+                   class="form-control" type="text" required ng-minlength="1" ng-maxlength="20"
+                   placeholder="{{ 'employeeDetails.lastName.placeholder' | translate }}"
+                   bs-tooltip="'Enter your lastName'"/>
+            <span class="glyphicon form-control-feedback"
+                  ng-class="{'glyphicon-ok': employeeDetailForm.lastName.$dirty && employeeDetailForm.lastName.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-success': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$valid, 'has-error': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$invalid}">
+            <label for="firstName" translate="employeeDetails.firstName.label" class="control-label"></label>
+            <input id="firstName" name="firstName" ng-model="employee.firstName"
+                   class="form-control" type="text" required ng-minlength="1" ng-maxlength="20"
+                   placeholder="{{ 'employeeDetails.firstName.placeholder' | translate }}"
+                   bs-tooltip="'Enter your firstName'"/>
+            <span class="glyphicon form-control-feedback"
+                  ng-class="{'glyphicon-ok': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-success': employeeDetailForm.gender.$dirty && employeeDetailForm.gender.$valid, 'has-error': employeeDetailForm.gender.$dirty && employeeDetailForm.gender.$invalid}">
+            <label for="gender" translate="employeeDetails.gender.label" class="control-label"></label>
+            <select id="gender" name="gender" ng-model="employee.gender"
+                    class="form-control"
+                    ng-options="v as ('employeeDetails.gender.value_' + v) | translate for v in genders" required>
+              <option value="" translate="employeeDetails.gender.placeholder"></option>
+            </select>
+            <span class="glyphicon form-control-feedback"
+                  ng-class="{'glyphicon-ok': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-success': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$valid, 'has-error': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$invalid}">
+            <label for="dateOfBirth" translate="employeeDetails.dateOfBirth.label" class="control-label"></label>
+            <date id="dateOfBirth" name="dateOfBirth" ng-model="employee.dateOfBirth"
+                  class="form-control" required
+                  placeholder="{{ 'employeeDetails.dateOfBirth.placeholder' | translate }}"></date>
+            <span class="glyphicon form-control-feedback"
+                  ng-class="{'glyphicon-ok': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$valid, 'glyphicon-remove': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$invalid}"></span>
+            <span class="help-block error"
+                  ng-show="employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$error.dateFormat"
+                  translate="globals.dateFormatMediumInValid"></span>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-success': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$valid, 'has-error': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$invalid}">
+            <label for="nationalityCode" translate="employeeDetails.nationalityCode.label"
+                   class="control-label"></label>
+            <select id="nationalityCode" name="nationalityCode" ng-model="employee.nationalityCode"
+                    class="form-control"
+                    ng-options="v as ('employeeDetails.nationalityCode.value_' + v) | translate for v in nationalities"
+                    required>
+              <option value="" translate="employeeDetails.nationalityCode.placeholder"></option>
+            </select>
+            <span class="glyphicon form-control-feedback"
+                  ng-class="{'glyphicon-ok': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$valid, 'glyphicon-remove': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$invalid}"></span>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-success': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$valid, 'has-error': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$invalid}">
+            <label for="dateOfEntry" translate="employeeDetails.dateOfEntry.label" class="control-label"></label>
+            <date id="dateOfEntry" name="dateOfEntry" ng-model="employee.dateOfEntry"
+                  class="form-control" required
+                  placeholder="{{ 'employeeDetails.dateOfEntry.placeholder' | translate }}"></date>
+            <span class="glyphicon form-control-feedback"
+                  ng-class="{'glyphicon-ok': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$valid, 'glyphicon-remove': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$invalid}"></span>
+            <span class="help-block error"
+                  ng-show="employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$error.dateFormat"
+                  translate="globals.dateFormatMediumInValid"></span>
+          </div>
+          <div class="form-group"
+               ng-class="{'has-success': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$valid, 'has-error': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$invalid}">
+            <label for="costCenter" translate="employeeDetails.costCenter.label" class="control-label"></label>
+            <select id="costCenter" name="costCenter" ng-model="employeeCostCenterOid"
+                    class="form-control"
+                    ng-options="costCenter.oid as (costCenter.identification + ' - ' + costCenter.description) for costCenter in costCenters"
+                    required>
+              <option value="" translate="employeeDetails.costCenter.placeholder"></option>
+            </select>
+            <span class="glyphicon form-control-feedback"
+                  ng-class="{'glyphicon-ok': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$valid, 'glyphicon-remove': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$invalid}"></span>
+          </div>
         </div>
+        <!-- /.box-body -->
+
+        <div class="box-footer">
+          <button type="reset" class="btn" translate="formCommon.cancel" ng-click="cancel()"></button>
+          <button type="submit" class="btn btn-primary pull-right" translate="formCommon.save"
+                  ng-disabled="employeeDetailForm.$invalid || employeeDetailForm.$pristine"></button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 

@@ -2,65 +2,62 @@
 
 <div class="container">
 
-    <div role="tabpanel">
-        <ul class="nav nav-tabs" data-tabs="tabs">
-            <li role="presentation" ng-click="selectTab(0)" ng-class="{'active':selectedTab == 0}">
-                <a data-target="#tab" role="tab" data-toggle="tab">Tests One</a>
-            </li>
-            <li role="presentation" ng-click="selectTab(1)" ng-class="{'active':selectedTab == 1}">
-                <a data-target="#tab" role="tab" data-toggle="tab">Tests Two</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-
-            <div role="tabpanel" class="tab-pane active" id="tab1" ng-show="selectedTab == 0">
-                <h3>Tests One</h3>
-
-                <div class="alert alert-success" ng-show="!neverUsed && !errorOnLastCall"><b>Success!</b></div>
-                <div class="alert alert-danger" ng-show="errorOnLastCall"><b>Error!</b></div>
-
-                <div class="form-group">
-                    <label class="control-label" for="baseUrl">Base URL</label>
-                    <input type="text" class="form-control" name="baseUrl" id="baseUrl" ng-model="baseUrl"
-                           bs-tooltip="'Base URL from projectConfig'">
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label" for="input1">Input 1</label>
-                    <input type="text" class="form-control" name="input1" id="input1" ng-model="input1"
-                           placeholder="Enter input1" bs-tooltip="'Tooltip for input1'">
-                </div>
-
-                <button class="btn btn-primary" type="button" ng-click="reset()">Reset</button>
-                <button class="btn btn-primary" type="button" ng-click="submit1()" ng-disabled="loading">Submit 1</button>
-                <button class="btn btn-primary" type="button" ng-click="submit2()" ng-disabled="loading">Submit 2</button>
-                <button class="btn btn-primary" type="button" ng-click="submit3()" ng-disabled="loading">Submit 3</button>
-                <button class="btn btn-primary" type="button" ng-click="submit4()" ng-disabled="loading">Submit 4</button>
-
-                <p ng-show="loading"><span class="glyphicon glyphicon-refresh"></span> Processing ... </p>
-
-                <pre class="text-sm" style="min-height: 300px;">{{output1}}</pre>
-            </div>
-
-            <div role="tabpanel" class="tab-pane active" id="tab2" ng-show="selectedTab == 1">
-                <h3>Tests Two</h3>
-
-                <div>Content 2</div>
-            </div>
-
-        </div>
-    </div>
-
-
-
+  <div role="tabpanel">
+    <ul class="nav nav-tabs" data-tabs="tabs">
+      <li role="presentation" ng-click="selectTab(0)" ng-class="{'active':selectedTab == 0}">
+        <a data-target="#tab" role="tab" data-toggle="tab">Tests One</a>
+      </li>
+      <li role="presentation" ng-click="selectTab(1)" ng-class="{'active':selectedTab == 1}">
+        <a data-target="#tab" role="tab" data-toggle="tab">Tests Two</a>
+      </li>
+    </ul>
     <div class="tab-content">
 
-        <div class="tab-pane active" id="tests1" ng-show="">
+      <div role="tabpanel" class="tab-pane active" id="tab1" ng-show="selectedTab == 0">
+        <h3>Tests One</h3>
 
+        <div class="alert alert-success" ng-show="!neverUsed && !errorOnLastCall"><b>Success!</b></div>
+        <div class="alert alert-danger" ng-show="errorOnLastCall"><b>Error!</b></div>
+
+        <div class="form-group">
+          <label class="control-label" for="baseUrl">Base URL</label>
+          <input type="text" class="form-control" name="baseUrl" id="baseUrl" ng-model="baseUrl"
+                 bs-tooltip="'Base URL from projectConfig'">
         </div>
 
+        <div class="form-group">
+          <label class="control-label" for="input1">Input 1</label>
+          <input type="text" class="form-control" name="input1" id="input1" ng-model="input1"
+                 placeholder="Enter input1" bs-tooltip="'Tooltip for input1'">
+        </div>
 
+        <button class="btn btn-primary" type="button" ng-click="reset()">Reset</button>
+        <button class="btn btn-primary" type="button" ng-click="submit1()" ng-disabled="loading">Submit 1</button>
+        <button class="btn btn-primary" type="button" ng-click="submit2()" ng-disabled="loading">Submit 2</button>
+        <button class="btn btn-primary" type="button" ng-click="submit3()" ng-disabled="loading">Submit 3</button>
+
+        <p ng-show="loading"><span class="glyphicon glyphicon-refresh"></span> Processing ... </p>
+
+        <pre class="text-sm" style="min-height: 300px;">{{output1}}</pre>
+      </div>
+
+      <div role="tabpanel" class="tab-pane active" id="tab2" ng-show="selectedTab == 1">
+        <h3>Tests Two</h3>
+
+        <div>Content 2</div>
+      </div>
 
     </div>
+  </div>
+
+
+  <div class="tab-content">
+
+    <div class="tab-pane active" id="tests1" ng-show="">
+
+    </div>
+
+
+  </div>
 
 </div>
