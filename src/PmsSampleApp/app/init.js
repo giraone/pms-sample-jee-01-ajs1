@@ -12,9 +12,5 @@
         'ngAnimate'
     ]);
 
-    // insert the base URL for test page here
-    // app.module.constant('apiBaseUrl', 'http://localhost:8080/PmsSample/');
-    app.module.constant('apiBaseUrl', 'http://pmssamplejee01-giraone.rhcloud.com/PmsSample/');
-
     FastClick.attach(document.body);
 }();
