@@ -1,6 +1,5 @@
 'use strict';
 
-//var DATE_REGEX = /^([0-2][0-9]{3})\-([0-1][0-9])\-([0-3][0-9])$/;
 angular.module('pms-sample').directive('date', function ($parse, dateFilter, $translate, $log) {
     return {
         restrict: "E",
@@ -14,10 +13,14 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
             if (attrs.required) {
                 isRequired = "required";
             }
+
+            var dateInput = $translate.instant('globals.dateInputFormatMedium');
+            /*
             var dateInput = "DD.MM.YYYY";
             $translate('globals.dateInputFormatMedium').then(function (text) {
                 dateInput = text;
             });
+            */
             var dateOutput = dateInput;
 
             var html = "<input id='" + attrs.id + "' name='" + attrs.name + "' type='date' " + isRequired + " class='form-control' placeholder='" + attrs.placeholder + "'></input>";
@@ -42,8 +45,8 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
                     $log.debug("dateFormatterN " + value);
                     if (value) {
                         //var date = dateFilter(value, "yyyy-MM-dd");
-                        var date = moment(value).format("YYYY-MM-DD");
-                        return date;
+                        var dateString = moment(value).format("YYYY-MM-DD");
+                        return dateString;
                     }
                     return;
                 }
@@ -93,9 +96,9 @@ angular.module('pms-sample').directive('date', function ($parse, dateFilter, $tr
                 var dateFormatter = function (value) {
                     $log.debug("dateParserE " + value);
                     if (value) {
-                        //var date = dateFilter(value, "yyyy-MM-dd");
-                        var date = moment(value).format(dateOutput);
-                        return date;
+                        //var dateString = dateFilter(value, "yyyy-MM-dd");
+                        var dateString = moment(value).format(dateOutput);
+                        return dateString;
                     }
                     return;
                 }
