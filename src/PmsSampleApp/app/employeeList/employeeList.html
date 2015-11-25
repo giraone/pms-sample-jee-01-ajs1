@@ -1,34 +1,51 @@
 <div class="row">
-    <div class="col-md-8">
-        <h4 translate="employeeList.title"></h4>
-    </div>
-    <div class="col-md-4">
-        <a ui-sref="employees.detail" class="btn btn-success"><i class="fa fa-plus"></i>
-            <span translate="employeeList.add"></span></a>
-    </div>
+  <div class="col-md-3">
+    <h4 translate="employeeList.title"></h4>
+  </div>
+  <div class="col-md-5">
+    <input id="searchFilter" type="text" class="form-control"
+           ng-model="searchFilter" ng-change="searchFilterChanged()"
+           placeholder="{{ 'employeeList.searchFilter_placeholder' | translate }}"
+           title="{{ 'employeeList.searchFilter_tooltip' | translate }}">
+  </div>
+  <div class="col-md-4">
+    <a ui-sref="employees.detail" class="btn btn-success"><i class="fa fa-plus"></i>
+      <span translate="employeeList.add"></span></a>
+    <a class="btn btn-success" ng-click="listRefresh()">
+      <span class="glyphicon glyphicon-refresh"></span></a>
+  </div>
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <table class="table table-condensed table-striped table-bordered table-hover" ng-if="employees">
-            <thead>
-            <tr>
-                <th ng-click="orderBy('personnelNumber')"><span translate="employeeList.personnelNumber"></span> <span ng-show="predicate == 'personnelNumber'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
-                <th ng-click="orderBy('lastName')"><span translate="employeeList.name"></span> <span ng-show="predicate == 'lastName'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
-                <th ng-click="orderBy('dateOfBirth')"><span translate="employeeList.dateOfBirth"></span> <span ng-show="predicate == 'dateOfBirth'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
-                <th ng-click="orderBy('costCenter.identification')"><span translate="employeeList.costCenter"></span> <span ng-show="predicate == 'costCenter.identification'" class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="employee in employees | orderBy:predicate:reverse" ui-sref="employees.detail({employeeId: employee.oid})">
-                    <td>{{employee.personnelNumber}}</td>
-                    <td>{{employee.lastName}}, {{employee.firstName}}</td>
-                    <td>{{ 'globals.dateFormatMedium' | translate:{date:employee.dateOfBirth} }}</td>
-                    <td>{{employee.costCenter.identification}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="alert alert-info" ng-if="employees.length === 0" translate="employeeList.noEntities"></div>
-        <div class="alert alert-danger" ng-if="hasError" translate="common.requestError"></div>
-    </div>
+  <div class="col-md-12">
+    <table class="table table-condensed table-striped table-bordered table-hover" ng-if="employees">
+      <thead>
+      <tr>
+        <th ng-click="orderBy('personnelNumber')"><span translate="employeeList.personnelNumber"></span> <span
+            ng-show="predicate == 'personnelNumber'" class="glyphicon pull-right"
+            ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
+        <th ng-click="orderBy('lastName')"><span translate="employeeList.name"></span> <span
+            ng-show="predicate == 'lastName'" class="glyphicon pull-right"
+            ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
+        <th ng-click="orderBy('dateOfBirth')"><span translate="employeeList.dateOfBirth"></span> <span
+            ng-show="predicate == 'dateOfBirth'" class="glyphicon pull-right"
+            ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
+        <th ng-click="orderBy('costCenter.identification')"><span translate="employeeList.costCenter"></span> <span
+            ng-show="predicate == 'costCenter.identification'" class="glyphicon pull-right"
+            ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="employee in employees | orderBy:predicate:reverse"
+          ui-sref="employees.detail({employeeId: employee.oid})">
+        <td>{{employee.personnelNumber}}</td>
+        <td>{{employee.lastName}}, {{employee.firstName}}</td>
+        <td>{{ 'globals.dateFormatMedium' | translate:{date:employee.dateOfBirth} }}</td>
+        <td>{{employee.costCenter.identification}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="alert alert-info" ng-if="employees.length === 0" translate="employeeList.noEntities"></div>
+    <div class="alert alert-danger" ng-if="hasError" translate="common.requestError"></div>
+  </div>
 </div>
