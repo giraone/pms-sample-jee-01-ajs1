@@ -2,10 +2,12 @@
     'use strict';
 
     /**
+     * Controller for creating or editing cost centers
      * @public
      * @constructor
      *
      * @param $scope
+     * @param $document
      * @param $log
      * @param $state
      * @param $stateParams
@@ -14,44 +16,40 @@
      * @param ngNotify
      * @param flash
      */
-    function CostCenterDetailController($scope, $log, $state, $stateParams, $translate, CostCentersResource, ngNotify, flash) {
+    function CostCenterDetailController($scope, $document, $log, $state, $stateParams, $translate,
+                                        CostCentersResource, ngNotify, flash) {
 
-        init();
-
+        
+        // construct the base class
+        BaseDetailController.call(this, $scope, $document, $log, $translate, ngNotify);
+        this.prototype = Object.create(EditViewController.prototype);
+        
         $scope.costCenter = $scope.costCenter || {};
-
-        function init() {
-            if ($stateParams.costCenterId) {
-
-                CostCentersResource.findById($stateParams.costCenterId).$promise.then(function(result) {
-                    $log.debug('costCenterDetailController.findById OK');
-                    $scope.costCenter = result;
-                }, function (error) {
-                    $log.debug('costCenterListController.findById ERROR');
-                    flash.setMessage({'type': 'error', 'text': 'The cost center with oid ' + $stateParams.costCenterId + ' could not be found!'});
-                });
-            }
-        }
 
         $scope.save = function () {
             // Sanity check!
             if (!$scope.costCenter && !$scope.costCenter.identification) {
                 return;
             }
+                       
             var promise;
             var successMessage;
+            var errorFunction;
             if ($stateParams.costCenterId) {
                 promise = CostCentersResource.update($scope.costCenter).$promise;
                 successMessage = 'costCenterDetails.successUpdate';
+                errorFunction = $scope.showResourceUpdateErrorNotification;
             }
             else {
                 promise = CostCentersResource.create($scope.costCenter).$promise;
                 successMessage = 'costCenterDetails.successCreate';
+                errorFunction = $scope.showResourceCreateErrorNotification;
             }
 
+            $scope.startLoading();  
             promise
                 .then(function (costCenterId) {
-                    ngNotify.set($translate.instant(successMessage), 'success');
+                    $scope.showResourceCreateSuccessNotification(successMessage);
                     // Stay and reload
                     /*
                     if (!$stateParams.costCenterId) {
@@ -68,17 +66,31 @@
                     // Back to list
                     $log.debug('costCenterDetailController.save BACK TO LIST');
                     $state.go('costCenters');
-                }, showErrorNotification);
+                }, errorFunction);
         };
 
         $scope.cancel = function () {
-            //$log.debug('costCenterDetailController.cancel');
             $state.go('costCenters');
-        }
+        };
+                
+        function init() {
+                        
+            if ($stateParams.costCenterId) {
 
-        function showErrorNotification() {
-            ngNotify.set($translate.instant('common.requestError'), 'error');
+                $scope.startLoading();              
+                CostCentersResource.findById($stateParams.costCenterId).$promise.then(function(result) {
+                    $log.debug('costCenterDetailController.findById OK');
+                    $scope.costCenter = result;
+                    $scope.finishedLoading();
+                }, function (error) {
+                    $log.debug('costCenterListController.findById ERROR ' + error);
+                    flash.setMessage({'type': 'error', 'text': 'The cost center with oid ' + $stateParams.costCenterId + ' could not be found!'});
+                    $scope.finishedLoading();
+                });
+            }
         }
+        
+        init();
     }
 
     app.module.controller('costCenterDetailController', CostCenterDetailController);

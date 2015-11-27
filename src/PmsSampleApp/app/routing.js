@@ -4,7 +4,7 @@
     app.module.config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('dashboard', getState('dashboard', '/'))
-            .state('about', getState('about', '/about'))
+            .state('about', getStaticState('about', '/about'))
             .state('testPage', getState('testPage', '/testPage'))
             .state('costCenters', getState('costCenterList', '/costCenters'))
             .state('costCenters.detail', getState('costCenterDetail', '/:costCenterId'))
@@ -21,6 +21,17 @@
                     templateUrl: 'app/' + name + '/' + name + '.html',
                     controller: name + 'Controller'
                     //controllerAs: 'vm'
+                }
+            }
+        };
+    }
+    
+    function getStaticState(name, url) {
+        return {
+            url: url || '/' + name,
+            views: {
+                'main@': {
+                    templateUrl: 'app/' + name + '/' + name + '.html',
                 }
             }
         };

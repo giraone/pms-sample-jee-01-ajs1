@@ -6,6 +6,7 @@
      * @constructor
      *
      * @param $scope
+     * @param $document
      * @param $log
      * @param $state
      * @param $stateParams
@@ -15,9 +16,7 @@
      * @param ngNotify
      * @param flash
      */
-    function employeeDetailController($scope, $log, $state, $stateParams, $translate, EmployeesResource, CostCentersResource, ngNotify, flash) {
-
-        init();
+    function employeeDetailController($scope, $document, $log, $state, $stateParams, $translate, EmployeesResource, CostCentersResource, ngNotify, flash) {
 
         $scope.employee = $scope.employee || {};
         // We cannot use $scope.employee directly, because on an entity update, the selection will not be made (1)
@@ -27,27 +26,6 @@
 
         // ISO 3166-1 alpha-3 country codes
         $scope.nationalities = ['DEU', 'AUT', 'CHE', 'ITA', 'USA'];
-
-        CostCentersResource.listAll().$promise.then(function (result) {
-            $scope.costCenters = result;
-        });
-
-        function init() {
-            if ($stateParams.employeeId) {
-
-                EmployeesResource.findById($stateParams.employeeId).$promise.then(function (result) {
-                    $scope.employee = result;
-                    // Now keep the redundant costCenter.oid attribute in sync!
-                    $scope.employeeCostCenterOid = $scope.employee.costCenter.oid;
-                }, function (error) {
-                    $log.debug('employeeDetailController.findById ERROR');
-                    flash.setMessage({
-                        'type': 'error',
-                        'text': 'The employee with oid ' + $stateParams.employeeId + ' could not be found!'
-                    });
-                });
-            }
-        }
 
         $scope.save = function () {
             // Sanity check!
@@ -96,11 +74,51 @@
         $scope.cancel = function () {
             //$log.debug('employeeDetailController.cancel');
             $state.go('employees');
-        }
+        };
 
+        $scope.startLoading = function() {
+            $document[0].body.style.cursor='wait';
+            $scope.loading = true;
+        };
+        
+        $scope.finishedLoading = function() {
+            $document[0].body.style.cursor='default';
+            $scope.loading = false;
+        };
+        
         function showErrorNotification() {
             ngNotify.set($translate.instant('common.requestError'), 'error');
         }
+        
+        function init() {
+             
+            $scope.startLoading();         
+            CostCentersResource.listAll().$promise.then(function (result) {
+                $scope.costCenters = result;
+                
+                if ($stateParams.employeeId) {
+
+                    EmployeesResource.findById($stateParams.employeeId).$promise.then(function (result) {
+                        $scope.employee = result;
+                        // Now keep the redundant costCenter.oid attribute in sync!
+                        $scope.employeeCostCenterOid = $scope.employee.costCenter.oid;
+                        $scope.finishedLoading();
+                    }, function (error) {
+                        $log.debug('employeeDetailController.findById ERROR');
+                        flash.setMessage({
+                            'type': 'error',
+                            'text': 'The employee with oid ' + $stateParams.employeeId + ' could not be found!'
+                        });
+                        $scope.finishedLoading();
+                    });
+                }
+                else {
+                    $scope.finishedLoading();
+                }
+            });        
+        }
+        
+        init();
     }
 
     app.module.controller('employeeDetailController', employeeDetailController);

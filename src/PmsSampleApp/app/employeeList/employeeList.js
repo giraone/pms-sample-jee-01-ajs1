@@ -6,62 +6,65 @@
      * @constructor
      *
      * @param $scope
+     * @param $document
      * @param $log
      * @param $filter
      * @param {EmployeesResource} EmployeesResource
+     * @param document
      */
-    function employeeListController($scope, $log, $filter, EmployeesResource) {
+    function employeeListController($scope, $document, $log, $filter, EmployeesResource) {
 
-        var vm = $scope;
-
-        vm.orderBy = function(predicateName) {
-            if (predicateName == vm.predicate) {
-                vm.reverse = !vm.reverse;
+        $scope.orderBy = function(predicateName) {
+            if (predicateName == $scope.predicate) {
+                $scope.reverse = !$scope.reverse;
             }
             else {
-                vm.predicate = predicateName;
-                vm.reverse = false;
+                $scope.predicate = predicateName;
+                $scope.reverse = false;
             }
         };
 
-        vm.listRefresh = function () {
-            var oDataFilter = vm._buildODataFilter(vm.searchFilter);
+        $scope.listRefresh = function () {
+            $scope.startLoading();
+            var oDataFilter = $scope._buildODataFilter($scope.searchFilter);
             EmployeesResource.listAll(100, 0, oDataFilter).$promise.then(function(result) {
-                vm.hasError = false;
-                vm.employees = result;
+                $scope.hasError = false;
+                $scope.employees = result;
+                $scope.finishedLoading();
             }, function (error) {
                 $log.debug('employeeListController.listAll ERROR');
-                vm.hasError = true;
-                vm.employees = [];
+                $scope.hasError = true;
+                $scope.employees = [];
+                $scope.finishedLoading();
             });
         };
 
-        vm.searchFilterChanged = function () {
-            //$log.debug("employeeListController.searchFilterChanged " + vm.searchFilter);
-            if (vm.searchFilter.length > 1 || vm.searchFilter.length < vm.lastSearchFilter.length)
+        $scope.searchFilterChanged = function () {
+            //$log.debug("employeeListController.searchFilterChanged " + $scope.searchFilter);
+            if ($scope.searchFilter.length > 1 || $scope.searchFilter.length < $scope.lastSearchFilter.length)
             {
-                vm.listRefresh();
+                $scope.listRefresh();
             }
-            vm.lastSearchFilter = vm.searchFilter;
+            $scope.lastSearchFilter = $scope.searchFilter;
         };
 
-        vm._buildODataFilter = function(userInput)
+        $scope._buildODataFilter = function(userInput)
         {
-            // vm.dateInputFormat = "DD.MM.YYYY";
-            vm.dateInputFormat = $filter('translate')('globals.dateInputFormatMedium');
-            // vm.dateInputFormatRegExp = "[^0-9]*([0-9][0-9]?[.][0-9][0-9]?[.][0-9][0-9][0-9]?[0-9]?)[^0-9]*";
-            vm.dateInputFormatRegExp = $filter('translate')('globals.dateInputFormatMediumRegExp');
+            // $scope.dateInputFormat = "DD.MM.YYYY";
+            $scope.dateInputFormat = $filter('translate')('globals.dateInputFormatMedium');
+            // $scope.dateInputFormatRegExp = "[^0-9]*([0-9][0-9]?[.][0-9][0-9]?[.][0-9][0-9][0-9]?[0-9]?)[^0-9]*";
+            $scope.dateInputFormatRegExp = $filter('translate')('globals.dateInputFormatMediumRegExp');
 
             var oDataFilter = null;
             var matchResult;
             var nameMatcher = new RegExp("(\D*)");
             var pnrMatcher = new RegExp("[^0-9]*([0-9][0-9][0-9][0-9][0-9]+)[^0-9]*");
-            var dateMatcher = new RegExp(vm.dateInputFormatRegExp);
+            var dateMatcher = new RegExp($scope.dateInputFormatRegExp);
 
             if (matchResult = dateMatcher.exec(userInput)) {
                 var found = matchResult[1];
                 // convert to iso date
-                var date = moment(found, vm.dateInputFormat, /* strict parsing */ false);
+                var date = moment(found, $scope.dateInputFormat, /* strict parsing */ false);
                 $log.debug('employeeListController._buildODataFilter ' + date);
                 if (date.isValid()) {
                     var isoDateString = moment(date).format("YYYYMMDD");
@@ -79,18 +82,29 @@
                 oDataFilter = "startswith(lastName, '" + found + "') eq true or startswith(firstName, '" + found + "') eq true";
             }
             return oDataFilter;
-        }
+        };
 
+        $scope.startLoading = function() {
+            $document[0].body.style.cursor='wait';
+            $scope.loading = true;
+        };
+        
+        $scope.finishedLoading = function() {
+            $document[0].body.style.cursor='default';
+            $scope.loading = false;
+        };
+    
         function init() {
-            vm.hasError = false;
-            vm.predicate = 'personnelNumber';
-            vm.reverse = false;
-            vm.employees = [];
-            vm.searchFilter = "";
-            vm.lastSearchFilter = "";
-            vm.employeesResourceQueryParams = "";
-
-            vm.listRefresh();
+            $scope.hasError = false;
+            $scope.predicate = 'personnelNumber';
+            $scope.reverse = false;
+            $scope.employees = [];
+            $scope.searchFilter = "";
+            $scope.lastSearchFilter = "";
+            $scope.employeesResourceQueryParams = "";
+            $scope.loading = false;
+                        
+            $scope.listRefresh();
         }
 
         init();

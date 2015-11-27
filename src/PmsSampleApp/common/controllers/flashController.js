@@ -2,7 +2,7 @@
     'use strict';
 
     /**
-     * FlashController from JBoss Forge scaffolding
+     * FlashController (toast messages) from JBoss Forge scaffolding
      * @constructor
      * @public
      *

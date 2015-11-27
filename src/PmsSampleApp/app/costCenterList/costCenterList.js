@@ -6,30 +6,27 @@
      * @constructor
      *
      * @param $scope
+     * @param $document
      * @param $log
      * @param {CostCentersResource} CostCentersResource
      */
-    function costCenterListController($scope, $log, CostCentersResource) {
+    function costCenterListController($scope, $document, $log, CostCentersResource) {
 
-        init();
-
-        function init() {
-            $scope.hasError = false;
-            $scope.predicate = 'identification';
-            $scope.reverse = false;
-            $scope.costCenters = [];
-
+        $scope.listRefresh = function () {
+            $scope.startLoading();
             CostCentersResource.listAll().$promise.then(function(result) {
                 $log.debug('costCenterListController.listAll OK');
                 $scope.hasError = false;
                 $scope.costCenters = result;
+                $scope.finishedLoading();
             }, function (error) {
-                $log.debug('costCenterListController.listAll ERROR');
+                $log.debug('costCenterListController.listAll ERROR ' + error);
                 $scope.hasError = true;
                 $scope.costCenters = [];
+                $scope.finishedLoading();
             });
-        }
-
+        };
+        
         $scope.orderBy = function(predicateName) {
             if (predicateName == $scope.predicate) {
                 $scope.reverse = !$scope.reverse;
@@ -39,6 +36,29 @@
                 $scope.reverse = false;
             }
         };
+        
+        $scope.startLoading = function() {
+            $document[0].body.style.cursor='wait';
+            $scope.loading = true;
+        };
+        
+        $scope.finishedLoading = function() {
+            $document[0].body.style.cursor='default';
+            $scope.loading = false;
+        };
+        
+
+        function init() {
+            $scope.hasError = false;
+            $scope.predicate = 'identification';
+            $scope.reverse = false;
+            $scope.costCenters = [];
+            $scope.loading = false;
+            
+            $scope.listRefresh();
+        }
+        
+        init();
     }
 
     app.module.controller('costCenterListController', costCenterListController);

@@ -4,6 +4,15 @@
 
     angular.module('pms-sample').factory('CostCentersResource', costCentersResource);
 
+    /**
+     * Factory for cost center REST API
+     * @public
+     * @constructor
+     *
+     * @param projectConfig
+     * @param $log
+     * @param $resource
+     */
     function costCentersResource(projectConfig, $log, $resource) {
 
         var baseUrl = projectConfig.baseUrl + '/costcenters';
@@ -22,7 +31,6 @@
         function getVersion() {
             return version;
         }
-
         function findById(oid) {
             $log.debug('CostCentersResource.findById oid=' + oid);
             var r = $resource(baseUrl + '/:oid', { oid: '@oid' });

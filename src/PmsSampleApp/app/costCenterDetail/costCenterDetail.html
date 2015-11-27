@@ -31,9 +31,9 @@
         <!-- /.box-body -->
 
         <div class="box-footer">
-          <button type="reset" class="btn" translate="formCommon.cancel" ng-click="cancel()"></button>
+          <button type="reset" class="btn" translate="formCommon.cancel" ng-click="cancel()" ng-disabled="loading"></button>
           <button type="submit" class="btn btn-primary pull-right" translate="formCommon.save"
-                  ng-disabled="costCenterDetailForm.$invalid || costCenterDetailForm.$pristine"></button>
+                  ng-disabled="loading || costCenterDetailForm.$invalid || costCenterDetailForm.$pristine"></button>
         </div>
       </form>
     </div>
