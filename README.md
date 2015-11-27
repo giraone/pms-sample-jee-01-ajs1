@@ -60,6 +60,10 @@ The gulp task will build the browser app. To get it working, please do the follo
 * Basic usage of directives for e.g. date input (`<date>`).
 * Drop down boxes with values fetch via REST services.
 * Basic usage of *ngNotify* for displaying notifications (success and error messages).
+* How to deactivate buttons, display wait cursor and/or progress bar while server calls are running.
+* How to use base classes for controllers with similar functionality: base controllers for edit and list views
+* How to handle server side error
+  * like CONFLICT (409), when duplicate key exceptions are detected
 * ...
 
 ## Convention and design decisions
