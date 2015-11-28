@@ -4,6 +4,16 @@
 
     angular.module('pms-sample').factory('EmployeesResource', employeesResource);
 
+    /**
+     * Factory for employee REST API
+     * @public
+     * @constructor
+     *
+     * @param projectConfig
+     * @param $log
+     * @param $resource
+     * @param measure
+     */
     function employeesResource(projectConfig, $log, $resource, measure) {
 
         var baseUrl = projectConfig.baseUrl + '/employees';
@@ -11,7 +21,7 @@
         var service = {
             getVersion: getVersion,
             findById: findById,
-            listAll: listAll,
+            listBlock: listBlock,
             create: create,
             update: update,
             deleteById: deleteById,
@@ -34,8 +44,8 @@
             });
             return result;
         }
-        function listAll(top, skip, filter) {
-            $log.debug('EmployeesResource.listAll top=' + top + ',skip=' + skip + ',filter=' + filter);
+        function listBlock(top, skip, filter) {
+            $log.debug('EmployeesResource.listBlock top=' + top + ',skip=' + skip + ',filter=' + filter);
             var start = measure.now();
 
             var queryParam = {};
@@ -43,8 +53,9 @@
             if (skip) queryParam.skip = skip;
             if (filter) queryParam.filter = filter;
             var r = $resource(baseUrl, paramDef);
-            var result = r.query(queryParam, function() {
-                $log.debug('EmployeesResource.listAll result.length=' + result.length + ", time=" + measure.diffText(start));
+            var result = r.get(queryParam, function() {
+                $log.debug('EmployeesResource.listBlock result.totalCount=' + result.totalCount
+                    + ', result.blockItems.length=' + result.blockItems.length + ", time=" + measure.diffText(start));
                 return result;
             });
             return result;

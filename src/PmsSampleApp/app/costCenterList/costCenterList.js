@@ -2,6 +2,7 @@
     'use strict';
 
     /**
+     * Controller for displaying all cost centers (no paging!)
      * @public
      * @constructor
      *

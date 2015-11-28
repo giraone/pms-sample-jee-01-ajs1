@@ -18,7 +18,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <table class="table table-condensed table-striped table-bordered table-hover" ng-if="employees">
+    <table id="itemTable" class="table table-condensed table-striped table-bordered table-hover" ng-if="employees">
       <thead>
       <tr>
         <th ng-click="orderBy('personnelNumber')"><span translate="employeeList.personnelNumber"></span> <span
@@ -44,6 +44,12 @@
         <td>{{employee.costCenter.identification}}</td>
       </tr>
       </tbody>
+      <tfoot>
+        <td colspan="4">
+          <a class="btn btn-success" ng-disabled="nextPageDisabled()" ng-click="loadMore()"><i class="fa fa-angle-double-right"></i>
+            <span translate="common.showMoreButton" translate-value-from="0" translate-value-to="{{ employees.length }}" translate-value-total="{{ totalCount }}"></span></a>
+        </td>
+    </tfoot>
     </table>
     <div class="alert alert-info" ng-if="employees.length === 0" translate="employeeList.noEntities"></div>
     <div class="alert alert-danger" ng-if="hasError" translate="common.requestError"></div>

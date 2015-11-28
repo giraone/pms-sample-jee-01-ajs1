@@ -12,8 +12,9 @@
      * @param projectConfig
      * @param $log
      * @param $resource
+     * @param measure
      */
-    function costCentersResource(projectConfig, $log, $resource) {
+    function costCentersResource(projectConfig, $log, $resource, measure) {
 
         var baseUrl = projectConfig.baseUrl + '/costcenters';
         var version = "1.0";
@@ -26,6 +27,8 @@
             deleteById: deleteById,
             summary: summary
         };
+        var paramDef = {top:'@top', skip:'@skip',filter:'@filter'};
+        
         return service;
 
         function getVersion() {
@@ -40,11 +43,17 @@
             });
             return result;
         }
-        function listAll() {
-            $log.debug('CostCentersResource.listAll');
-            var r = $resource(baseUrl);
-            var result = r.query(function() {
-                $log.debug('CostCentersResource.listAll result.length=' + result.length);
+        function listAll(top, skip, filter) {
+            $log.debug('CostCentersResource.listAll top=' + top + ',skip=' + skip + ',filter=' + filter);
+            var start = measure.now();
+
+            var queryParam = {};
+            if (top) queryParam.top = top;
+            if (skip) queryParam.skip = skip;
+            if (filter) queryParam.filter = filter;
+            var r = $resource(baseUrl, paramDef);
+            var result = r.query(queryParam, function() {
+                $log.debug('CostCentersResource.listAll result.length=' + ", time=" + measure.diffText(start));
                 return result;
             });
             return result;
