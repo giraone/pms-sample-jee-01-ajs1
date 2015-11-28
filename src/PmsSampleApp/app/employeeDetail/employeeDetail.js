@@ -18,7 +18,12 @@
      */
     function employeeDetailController($scope, $document, $log, $state, $stateParams, $translate, EmployeesResource, CostCentersResource, ngNotify, flash) {
 
+        // construct the base class
+        BaseDetailController.call(this, $scope, $document, $log, $translate, ngNotify);
+        this.prototype = Object.create(BaseDetailController.prototype);
+        
         $scope.employee = $scope.employee || {};
+        
         // We cannot use $scope.employee directly, because on an entity update, the selection will not be made (1)
         $scope.employeeCostCenterOid = $scope.employee && $scope.employee.costCenter ? $scope.employee.costCenter.oid : null;
 
@@ -41,18 +46,22 @@
 
             var promise;
             var successMessage;
+            var errorFunction;
             if ($stateParams.employeeId) {
                 promise = EmployeesResource.update($scope.employee).$promise;
                 successMessage = 'employeeDetails.successUpdate';
+                errorFunction = $scope.showResourceUpdateErrorNotification;
             }
             else {
                 promise = EmployeesResource.create($scope.employee).$promise;
                 successMessage = 'employeeDetails.successCreate';
+                errorFunction = $scope.showResourceCreateErrorNotification;
             }
 
+            $scope.startLoading();
             promise
                 .then(function (employeeId) {
-                    ngNotify.set($translate.instant(successMessage), 'success');
+                    $scope.showResourceCreateSuccessNotification(successMessage);
                     // Stay and reload
                     /*
                     if (!$stateParams.employeeId) {
@@ -68,27 +77,12 @@
                     // Back to list
                     $log.debug('employeeDetailController.save BACK TO LIST');
                     $state.go('employees');
-                }, showErrorNotification);
+                }, errorFunction);
         };
 
         $scope.cancel = function () {
-            //$log.debug('employeeDetailController.cancel');
             $state.go('employees');
         };
-
-        $scope.startLoading = function() {
-            $document[0].body.style.cursor='wait';
-            $scope.loading = true;
-        };
-        
-        $scope.finishedLoading = function() {
-            $document[0].body.style.cursor='default';
-            $scope.loading = false;
-        };
-        
-        function showErrorNotification() {
-            ngNotify.set($translate.instant('common.requestError'), 'error');
-        }
         
         function init() {
              

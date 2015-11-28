@@ -96,3 +96,9 @@ body,
 		height: calc(100vh - 2 * 50px - 51px);
 	}
 }
+
+/** Empty/transparent glyphicon */
+.glyphicon-none:before {
+    content: "\2122";
+    color: transparent !important;
+}

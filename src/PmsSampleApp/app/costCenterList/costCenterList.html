@@ -16,11 +16,11 @@
       <thead>
       <tr>
         <th ng-click="orderBy('identification')"><span translate="costCenterList.identification"></span> <span
-            ng-show="predicate == 'identification'" class="glyphicon pull-right"
-            ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
+            class="glyphicon pull-right"
+            ng-class="{'glyphicon-none': predicate!='identification', 'glyphicon-chevron-up': predicate=='identification'&&reverse, 'glyphicon-chevron-down': predicate=='identification'&&!reverse}"></span></th>
         <th ng-click="orderBy('description')"><span translate="costCenterList.description"></span> <span
-            ng-show="predicate == 'description'" class="glyphicon pull-right"
-            ng-class="{'glyphicon-chevron-up': reverse, 'glyphicon-chevron-down': !reverse}"></span></th>
+            class="glyphicon pull-right"
+            ng-class="{'glyphicon-none': predicate!='description', 'glyphicon-chevron-up': predicate=='description'&&reverse, 'glyphicon-chevron-down': predicate=='description'&&!reverse}"></span></th>
       </tr>
       </thead>
       <tbody>

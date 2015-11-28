@@ -18,11 +18,10 @@
      */
     function CostCenterDetailController($scope, $document, $log, $state, $stateParams, $translate,
                                         CostCentersResource, ngNotify, flash) {
-
-        
+      
         // construct the base class
         BaseDetailController.call(this, $scope, $document, $log, $translate, ngNotify);
-        this.prototype = Object.create(EditViewController.prototype);
+        this.prototype = Object.create(BaseDetailController.prototype);
         
         $scope.costCenter = $scope.costCenter || {};
 
