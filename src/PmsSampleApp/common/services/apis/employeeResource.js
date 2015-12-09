@@ -44,13 +44,14 @@
             });
             return result;
         }
-        function listBlock(top, skip, filter) {
-            $log.debug('EmployeesResource.listBlock top=' + top + ',skip=' + skip + ',filter=' + filter);
+        function listBlock(top, skip, orderby, filter) {
+            $log.debug('EmployeesResource.listBlock top=' + top + ',skip=' + skip + ',orderby=' + orderby + ',filter=' + filter);
             var start = measure.now();
 
             var queryParam = {};
             if (top) queryParam.top = top;
             if (skip) queryParam.skip = skip;
+            if (orderby) queryParam.orderby = orderby;
             if (filter) queryParam.filter = filter;
             var r = $resource(baseUrl, paramDef);
             var result = r.get(queryParam, function() {

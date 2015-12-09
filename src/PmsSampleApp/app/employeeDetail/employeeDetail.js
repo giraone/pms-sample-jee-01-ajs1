@@ -27,11 +27,15 @@
         // We cannot use $scope.employee directly, because on an entity update, the selection will not be made (1)
         $scope.employeeCostCenterOid = $scope.employee && $scope.employee.costCenter ? $scope.employee.costCenter.oid : null;
 
+        // Gender codes
         $scope.genders = ['U', 'M', 'F', 'I'];
 
-        // ISO 3166-1 alpha-3 country codes
-        $scope.nationalities = ['DEU', 'AUT', 'CHE', 'ITA', 'USA'];
+        // ISO 3166-1 alpha-2 country codes
+        $scope.nationalityCodes = ['DE', 'AT', 'CH', 'IT', 'US'];
 
+        // marital status codes
+        $scope.maritalStatusCodes = ['U', 'M', 'W'];
+        
         $scope.save = function () {
             // Sanity check!
             if (!$scope.employee && !$scope.employee.personnelNumber) {
@@ -40,9 +44,14 @@
 
             // Now keep the redundant costCenter.oid attribute in sync!
             if ($scope.employee.costCenter)
+            {
                 $scope.employee.costCenter.oid = $scope.employeeCostCenterOid;
+            }    
             else
+            {
                 $scope.employee.costCenter = { "oid": $scope.employeeCostCenterOid };
+            }
+            // $log.debug('costCenter new oid = ' + $scope.employee.costCenter.oid);
 
             var promise;
             var successMessage;

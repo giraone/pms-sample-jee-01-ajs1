@@ -69,7 +69,7 @@
                    class="control-label"></label>
             <select id="nationalityCode" name="nationalityCode" ng-model="employee.nationalityCode"
                     class="form-control"
-                    ng-options="v as ('employeeDetails.nationalityCode.value_' + v) | translate for v in nationalities"
+                    ng-options="v as ('employeeDetails.nationalityCode.value_' + v) | translate for v in nationalityCodes"
                     required>
               <option value="" translate="employeeDetails.nationalityCode.placeholder"></option>
             </select>
@@ -100,6 +100,19 @@
             <span class="glyphicon form-control-feedback"
                   ng-class="{'glyphicon-ok': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$valid, 'glyphicon-remove': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$invalid}"></span>
           </div>
+          <div class="form-group"
+               ng-class="{'has-success': employeeDetailForm.maritalStatus.$dirty && employeeDetailForm.maritalStatus.$valid, 'has-error': employeeDetailForm.maritalStatus.$dirty && employeeDetailForm.maritalStatus.$invalid}">
+            <label for="maritalStatus" translate="employeeDetails.maritalStatus.label"
+                   class="control-label"></label>
+            <select id="maritalStatus" name="maritalStatus" ng-model="employee.maritalStatus"
+                    class="form-control"
+                    ng-options="v as ('employeeDetails.maritalStatus.value_' + v) | translate for v in maritalStatusCodes">
+              <option value="" translate="employeeDetails.maritalStatus.placeholder"></option>
+            </select>
+            <span class="glyphicon form-control-feedback"
+                  ng-class="{'glyphicon-ok': employeeDetailForm.maritalStatus.$dirty && employeeDetailForm.maritalStatus.$valid, 'glyphicon-remove': employeeDetailForm.maritalStatus.$dirty && employeeDetailForm.maritalStatus.$invalid}"></span>
+          </div>          
+          
         </div>
         <!-- /.box-body -->
 

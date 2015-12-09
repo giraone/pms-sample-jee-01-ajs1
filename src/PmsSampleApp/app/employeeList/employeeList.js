@@ -23,6 +23,7 @@
                 $scope.predicate = predicateName;
                 $scope.reverse = false;
             }
+            $scope.listRefresh(false);
         };
 
         $scope.listRefresh = function (append) {
@@ -31,9 +32,11 @@
             {
                 $scope.currentPage = 0;
             }
-            var oDataFilter = $scope._buildODataFilter($scope.searchFilter);
+            var oDataOrderBy = $scope.predicate + " " + ($scope.reverse ? "desc" : "asc");
+            var oDataFilter = $scope._buildODataFilter($scope.searchFilter.trim());
+            console.log("oDataFilter = " +oDataFilter);
             EmployeesResource.listBlock($scope.itemsPerPage, $scope.currentPage * $scope.itemsPerPage,
-                oDataFilter).$promise.then(function(result) {
+                oDataOrderBy, oDataFilter).$promise.then(function(result) {
                 $scope.hasError = false;
                 if (append)
                     $scope.employees = $scope.employees.concat(result.blockItems);
@@ -88,8 +91,9 @@
 
             var oDataFilter = null;
             var matchResult;
-            var nameMatcher = new RegExp("(\D*)");
+            var nameMatcher = new RegExp("[^0-9]+");
             var pnrMatcher = new RegExp("[^0-9]*([0-9][0-9][0-9][0-9][0-9]+)[^0-9]*");
+            var costCenterMatcher = new RegExp("[^K0-9]*([K][0-9][0-9][0-9][0-9][0-9]+)[^0-9]*");
             var dateMatcher = new RegExp($scope.dateInputFormatRegExp);
 
             if (matchResult = dateMatcher.exec(userInput)) {
@@ -103,13 +107,16 @@
                     oDataFilter = "dateOfBirth eq '" + isoDateString + "'";
                 }
             }
+            else if (matchResult = costCenterMatcher.exec(userInput)) {
+                var found = userInput;
+                oDataFilter = "costCenter.identification eq '" + found + "'";
+            }
             else if (matchResult = pnrMatcher.exec(userInput)) {
-                var found = matchResult[1];
+                var found = userInput;
                 oDataFilter = "personnelNumber eq '" + found + "'";
             }
-            //else if (matchResult = nameMatcher.exec(userInput)) {
             else if (matchResult = nameMatcher.exec(userInput)) {
-                var found = userInput; // matchResult[1];
+                var found = userInput;
                 oDataFilter = "startswith(lastName, '" + found + "') eq true or startswith(firstName, '" + found + "') eq true";
             }
             return oDataFilter;
