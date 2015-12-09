@@ -104,7 +104,7 @@
                     EmployeesResource.findById($stateParams.employeeId).$promise.then(function (result) {
                         $scope.employee = result;
                         // Now keep the redundant costCenter.oid attribute in sync!
-                        $scope.employeeCostCenterOid = $scope.employee.costCenter.oid;
+                        $scope.employeeCostCenterOid = $scope.employee.costCenter ? $scope.employee.costCenter.oid : null;
                         $scope.finishedLoading();
                     }, function (error) {
                         $log.debug('employeeDetailController.findById ERROR');

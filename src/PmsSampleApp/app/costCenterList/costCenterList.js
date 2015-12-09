@@ -15,7 +15,7 @@
 
         $scope.listRefresh = function () {
             $scope.startLoading();
-            CostCentersResource.listAll().$promise.then(function(result) {
+            CostCentersResource.listAll(100, 0).$promise.then(function(result) {
                 $log.debug('costCenterListController.listAll OK');
                 $scope.hasError = false;
                 $scope.costCenters = result;
