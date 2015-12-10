@@ -9,33 +9,35 @@
      * @param $scope
      * @param $document
      * @param $log
+     * @param $state
+     * @param $stateParams
      * @param $filter
      * @param {EmployeesResource} EmployeesResource
      * @param document
      */
-    function employeeListController($scope, $window, $document, $log, $filter, $timeout, EmployeesResource) {
+    function employeeListController($scope, $window, $document, $log, $state, $stateParams, $filter, $timeout, EmployeesResource) {
 
         $scope.orderBy = function(predicateName) {
             if (predicateName == $scope.predicate) {
-                $scope.reverse = !$scope.reverse;
+                $stateParams.sortReverse = !$scope.reverse;
             }
             else {
-                $scope.predicate = predicateName;
-                $scope.reverse = false;
+                $stateParams.sortPredicate = predicateName;
+                $stateParams.sortReverse = false;
             }
-            $scope.listRefresh(false);
+            $state.go('.', $stateParams);        
         };
 
         $scope.listRefresh = function (append) {
             $scope.startLoading();
             if (!append)
             {
-                $scope.currentPage = 0;
+                $stateParams.currentPage = 0;
             }
-            var oDataOrderBy = $scope.predicate + " " + ($scope.reverse ? "desc" : "asc");
-            var oDataFilter = $scope._buildODataFilter($scope.searchFilter.trim());
-            console.log("oDataFilter = " +oDataFilter);
-            EmployeesResource.listBlock($scope.itemsPerPage, $scope.currentPage * $scope.itemsPerPage,
+            var oDataOrderBy = $stateParams.sortPredicate + " " + ($stateParams.sortReverse ? "desc" : "asc");
+            var oDataFilter = $scope._buildODataFilter($stateParams.searchFilter.trim());
+            $log.debug("oDataFilter = " + oDataFilter);
+            EmployeesResource.listBlock($stateParams.itemsPerPage, $stateParams.currentPage * $stateParams.itemsPerPage,
                 oDataOrderBy, oDataFilter).$promise.then(function(result) {
                 $scope.hasError = false;
                 if (append)
@@ -46,7 +48,7 @@
                 
                  $timeout(function() {
                     var b = document.getElementById('mainContent');
-                    //console.log(b.scrollTop + " " + b.scrollHeight);
+                    //$log.debug(b.scrollTop + " " + b.scrollHeight);
                     b.scrollTop = b.scrollHeight;
                 }, 1);
                                   
@@ -61,8 +63,8 @@
         };
 
         $scope.loadMore = function() {
-            $scope.currentPage++;
-            $scope.listRefresh(true);
+            $stateParams.currentPage++;
+            $state.go('.', $stateParams);
         };
 
         $scope.nextPageDisabled = function() {
@@ -77,7 +79,8 @@
             //$log.debug("employeeListController.searchFilterChanged " + $scope.searchFilter);
             if ($scope.searchFilter.length > 1 || $scope.searchFilter.length < $scope.lastSearchFilter.length)
             {
-                $scope.listRefresh(false);
+                $stateParams.searchFilter = $scope.searchFilter;
+                $state.go('.', $stateParams);
             }
             $scope.lastSearchFilter = $scope.searchFilter;
         };
@@ -133,14 +136,20 @@
         };
     
         function init() {
-            $scope.hasError = false;
-            $scope.predicate = 'personnelNumber';
-            $scope.reverse = false;        
+            $log.debug("employeeListController.init searchFilter=" + $stateParams.searchFilter + ", currentPage=" + $stateParams.currentPage,
+                "sortPredicate=" + $stateParams.sortPredicate + ",sortReverse=" + $stateParams.sortReverse);
+            
+            $stateParams.currentPage = $stateParams.currentPage ? parseInt($stateParams.currentPage) : 0;
+            $stateParams.itemsPerPage = $stateParams.itemsPerPage ? parseInt($stateParams.itemsPerPage) : 10;
+            $scope.predicate = $stateParams.sortPredicate = $stateParams.sortPredicate ? $stateParams.sortPredicate : 'personnelNumber';
+            $scope.reverse = $stateParams.sortReverse = $stateParams.sortReverse ? ($stateParams.sortReverse == "true") : false;
+            $scope.searchFilter = $stateParams.searchFilter = $stateParams.searchFilter ? $stateParams.searchFilter : '';
+            
+            if ($scope.skip == NaN) $scope.skip = 0;
+            
+            $scope.hasError = false;       
             $scope.employees = [];
-            $scope.itemsPerPage = 10;
-            $scope.currentPage = 0;
-            $scope.totalCount = 0;
-            $scope.searchFilter = "";
+            $scope.totalCount = 0;         
             $scope.lastSearchFilter = "";
             $scope.employeesResourceQueryParams = "";
             $scope.loading = false;

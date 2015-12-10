@@ -1,4 +1,4 @@
-!function ($, jQuery, window, document) {
+(function() {
     'use strict';
 
     /**
@@ -84,17 +84,19 @@
                     }
                     */
                     // Back to list
-                    $log.debug('employeeDetailController.save BACK TO LIST');
+                    $log.debug('employeeDetailController.save BACK TO LIST ' + $stateParams.searchFilter);
                     $state.go('employees');
                 }, errorFunction);
         };
 
         $scope.cancel = function () {
-            $state.go('employees');
+            //$state.go('employees');
+            window.history.back();
         };
         
         function init() {
              
+            $log.debug("employeeDetailController.init searchFilter=" + $stateParams.searchFilter + ", skip=" + $stateParams.skip);
             $scope.startLoading();         
             CostCentersResource.listAll().$promise.then(function (result) {
                 $scope.costCenters = result;
@@ -125,4 +127,4 @@
     }
 
     app.module.controller('employeeDetailController', employeeDetailController);
-}();
+})();
