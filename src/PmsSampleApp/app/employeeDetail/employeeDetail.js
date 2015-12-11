@@ -1,4 +1,4 @@
-(function() {
+!function ($, jQuery, window, document) {
     'use strict';
 
     /**
@@ -6,6 +6,7 @@
      * @constructor
      *
      * @param $scope
+     * @param $window
      * @param $document
      * @param $log
      * @param $state
@@ -16,7 +17,7 @@
      * @param ngNotify
      * @param flash
      */
-    function employeeDetailController($scope, $document, $log, $state, $stateParams, $translate, EmployeesResource, CostCentersResource, ngNotify, flash) {
+    function employeeDetailController($scope, $window, $document, $log, $state, $stateParams, $translate, EmployeesResource, CostCentersResource, ngNotify, flash) {
 
         // construct the base class
         BaseDetailController.call(this, $scope, $document, $log, $translate, ngNotify);
@@ -85,13 +86,14 @@
                     */
                     // Back to list
                     $log.debug('employeeDetailController.save BACK TO LIST ' + $stateParams.searchFilter);
-                    $state.go('employees');
+                    $state.go('employees', $stateParams, { "location": false });
+                    //$window.history.back();
                 }, errorFunction);
         };
 
         $scope.cancel = function () {
-            //$state.go('employees');
-            window.history.back();
+            $state.go('employees', $stateParams, { "location": false });
+            //$window.history.back();
         };
         
         function init() {
@@ -127,4 +129,4 @@
     }
 
     app.module.controller('employeeDetailController', employeeDetailController);
-})();
+}();
