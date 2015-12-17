@@ -21,16 +21,16 @@
     <table id="itemTable" class="table table-condensed table-striped table-bordered table-hover" ng-if="employees">
       <thead>
       <tr>
-        <th ng-click="orderBy('personnelNumber')"><span translate="employeeList.personnelNumber"></span> <span
+        <th ng-click="orderBy('personnelNumber')"><span translate="employeeList.personnelNumberShort" ng-if="smallDevice"></span><span translate="employeeList.personnelNumber" ng-if="!smallDevice"></span> <span
             class="glyphicon pull-right"
             ng-class="{'glyphicon-none': predicate!='personnelNumber', 'glyphicon-chevron-up': predicate=='personnelNumber'&&reverse, 'glyphicon-chevron-down': predicate=='personnelNumber'&&!reverse}"></span></th>
         <th ng-click="orderBy('lastName')"><span translate="employeeList.name"></span> <span
             class="glyphicon pull-right"
             ng-class="{'glyphicon-none': predicate!='lastName', 'glyphicon-chevron-up': predicate=='lastName'&&reverse, 'glyphicon-chevron-down': predicate=='lastName'&&!reverse}"></span></th>
-        <th ng-click="orderBy('dateOfBirth')"><span translate="employeeList.dateOfBirth"></span> <span
+        <th ng-click="orderBy('dateOfBirth')"><span translate="employeeList.dateOfBirthShort" ng-if="smallDevice"></span><span translate="employeeList.dateOfBirth" ng-if="!smallDevice"></span> <span
             class="glyphicon pull-right"
             ng-class="{'glyphicon-none': predicate!='dateOfBirth', 'glyphicon-chevron-up': predicate=='dateOfBirth'&&reverse, 'glyphicon-chevron-down': predicate=='dateOfBirth'&&!reverse}"></span></th>
-        <th ng-click="orderBy('costCenter.identification')"><span translate="employeeList.costCenter"></span> <span
+        <th ng-click="orderBy('costCenter.identification')"><span translate="employeeList.costCenterShort" ng-if="smallDevice"></span><span translate="employeeList.costCenter" ng-if="!smallDevice"></span> <span
             class="glyphicon pull-right"
             ng-class="{'glyphicon-none': predicate!='costCenter.identification', 'glyphicon-chevron-up': predicate=='costCenter.identification'&&reverse, 'glyphicon-chevron-down': predicate=='costCenter.identification'&&!reverse}"></span></th>
       </tr>

@@ -147,7 +147,9 @@
             
             if ($scope.skip == NaN) $scope.skip = 0;
             
-            $scope.hasError = false;       
+            $scope.hasError = false;
+            $scope.smallDevice = isBootstrapDeviceSize('xs'); 
+            $scope.bootstrapDeviceSize = getBootstrapDeviceSize();      
             $scope.employees = [];
             $scope.totalCount = 0;         
             $scope.lastSearchFilter = "";

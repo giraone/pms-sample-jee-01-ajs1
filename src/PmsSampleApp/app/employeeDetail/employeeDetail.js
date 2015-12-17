@@ -30,18 +30,31 @@
         // Gender codes
         $scope.genders = ['U', 'M', 'F', 'I'];
 
-        // ISO 3166-1 alpha-2 country codes
-        $scope.nationalityCodes = ['DE', 'AT', 'CH', 'IT', 'US'];
-
         // marital status codes
         $scope.maritalStatusCodes = ['U', 'M', 'W'];
         
+        // numberOfChildren codes (plain integer)
+        $scope.numberOfChildrenCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8' , '9'];
+        $scope.numberOfChildrenValue = $scope.employee && $scope.employee.numberOfChildren ? $scope.employee.numberOfChildren.toString() : null;
+ 
+        // ISO 3166-1 alpha-2 country codes
+        $scope.nationalityCodes = ['DE', 'AT', 'CH', 'IT', 'US'];
+ 
+         // ISO 3166-3 country codes
+        $scope.countryOfBirthCodes = ['DE', 'DDDE', 'AT', 'CH', 'IT', 'US'];
+                      
         $scope.save = function () {
             // Sanity check!
             if (!$scope.employee && !$scope.employee.personnelNumber) {
                 return;
             }
 
+            // Convert number of children from string to integer
+            if ($scope.numberOfChildrenValue == null)
+                $scope.employee.numberOfChildren = null;
+            else
+                $scope.employee.numberOfChildren = parseInt($scope.numberOfChildrenValue);
+            
             // Now keep the redundant costCenter.oid attribute in sync!
             if ($scope.employee.costCenter)
             {
@@ -105,6 +118,16 @@
 
                     EmployeesResource.findById($stateParams.employeeId).$promise.then(function (result) {
                         $scope.employee = result;
+                        // Convert number of children from integer to string
+                        if ($scope.employee.numberOfChildren)
+                        {
+                            $scope.numberOfChildrenValue = $scope.employee.numberOfChildren.toString();
+                        }
+                        else
+                        {
+                            $scope.numberOfChildrenValue = null;
+                        }
+                        
                         // Now keep the redundant costCenter.oid attribute in sync!
                         $scope.employeeCostCenterOid = $scope.employee.costCenter ? $scope.employee.costCenter.oid : null;
                         $scope.finishedLoading();

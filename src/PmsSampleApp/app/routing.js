@@ -1,4 +1,4 @@
-!function ($, jQuery, window, document) {
+!function ($, jQuery, document) {
     'use strict';
 
     app.module.config(function ($stateProvider, $urlRouterProvider) {
@@ -8,7 +8,7 @@
             .state('testPage', getState('testPage', '/testPage'))
             .state('costCenters', getState('costCenterList', '/costCenters'))
             .state('costCenters.detail', getState('costCenterDetail', '/:costCenterId'))
-            .state('employees', getState('employeeList', '/employees?skip&predicate&reverse&searchFilter', {
+            .state('employees', getState('employeeList', '/employees?skip&predicate&reverse&searchFilter', false, {
                 currentPage: {
                     value: '0',
                     squash: true
@@ -30,17 +30,22 @@
                     squash: true
                 }
             }))
-            .state('employees.detail', getState('employeeDetail', '/:employeeId?skip&predicate&reverse&searchFilter'))
+            .state('employees.detail', getState('employeeDetail', '/:employeeId?skip&predicate&reverse&searchFilter', true))
         $urlRouterProvider.otherwise('/');
     });
 
-    function getState(name, url, params) {
+    function getState(name, url, useFormFactor, params) {
+        var templateUrl = 'app/' + name + '/' + name + '.html';
+        if (useFormFactor && window.innerWidth < window.innerHeight)
+        {
+            templateUrl = 'app/' + name + '/' + name + '-portrait.html';
+        }
         return {
             url: url || '/' + name,
             params: params,
             views: {
                 'main@': {
-                    templateUrl: 'app/' + name + '/' + name + '.html',
+                    templateUrl: templateUrl,
                     controller: name + 'Controller',
                     //controllerAs: name
                 }

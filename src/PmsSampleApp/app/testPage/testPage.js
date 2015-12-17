@@ -15,6 +15,8 @@
   function TestPageController($scope, $document, $log, projectConfig, $resource, CostCentersResource) {
 
     $scope.baseUrl = projectConfig.baseUrl;
+    
+    $scope.bootstrapDeviceSize = getBootstrapDeviceSize();   
 
     $scope.selectedTab = 0; //set selected tab to the 1st by default.
 
