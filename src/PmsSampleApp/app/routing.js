@@ -8,7 +8,7 @@
             .state('testPage', getState('testPage', '/testPage'))
             .state('costCenters', getState('costCenterList', '/costCenters'))
             .state('costCenters.detail', getState('costCenterDetail', '/:costCenterId'))
-            .state('employees', getState('employeeList', '/employees?skip&predicate&reverse&searchFilter', false, {
+            .state('employees', getState('employeeList', '/employees?currentPage&itemsPerPage&sortPredicate&sortReverse&searchFilter', {
                 currentPage: {
                     value: '0',
                     squash: true
@@ -30,7 +30,7 @@
                     squash: true
                 }
             }))
-            .state('employees.detail', getState('employeeDetail', '/:employeeId?skip&predicate&reverse&searchFilter', true))
+            .state('employees.detail', getState('employeeDetail', '/:employeeId'))
         $urlRouterProvider.otherwise('/');
     });
 

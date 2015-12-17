@@ -9,35 +9,38 @@
      * @param $scope
      * @param $document
      * @param $log
+     * @param $animate
      * @param $state
      * @param $stateParams
      * @param $filter
      * @param {EmployeesResource} EmployeesResource
      * @param document
      */
-    function employeeListController($scope, $window, $document, $log, $state, $stateParams, $filter, $timeout, EmployeesResource) {
+    function employeeListController($scope, $document, $log, $animate, $state, $stateParams, $filter, $timeout, EmployeesResource) {
 
         $scope.orderBy = function(predicateName) {
+            $log.debug("orderBy = " + predicateName + ", $scope.predicate=" + $scope.predicate
+                + ", $scope.reverse=" + $scope.reverse + ", $stateParams.sortReverse=" + $stateParams.sortReverse);
             if (predicateName == $scope.predicate) {
-                $stateParams.sortReverse = !$scope.reverse;
+                $scope.reverse = !$stateParams.sortReverse;
             }
             else {
-                $stateParams.sortPredicate = predicateName;
-                $stateParams.sortReverse = false;
+                $scope.predicate = predicateName;
+                $scope.reverse = false;
             }
-            $state.go('.', $stateParams);        
+            $scope.listRefresh(false);   
         };
 
         $scope.listRefresh = function (append) {
             $scope.startLoading();
             if (!append)
             {
-                $stateParams.currentPage = 0;
+                $scope.currentPage = 0;
             }
-            var oDataOrderBy = $stateParams.sortPredicate + " " + ($stateParams.sortReverse ? "desc" : "asc");
-            var oDataFilter = $scope._buildODataFilter($stateParams.searchFilter.trim());
+            var oDataOrderBy = $scope.predicate + " " + ($scope.reverse ? "desc" : "asc");
+            var oDataFilter = $scope._buildODataFilter($scope.searchFilter.trim());
             $log.debug("oDataFilter = " + oDataFilter);
-            EmployeesResource.listBlock($stateParams.itemsPerPage, $stateParams.currentPage * $stateParams.itemsPerPage,
+            EmployeesResource.listBlock($scope.itemsPerPage, $scope.currentPage * $scope.itemsPerPage,
                 oDataOrderBy, oDataFilter).$promise.then(function(result) {
                 $scope.hasError = false;
                 if (append)
@@ -46,11 +49,13 @@
                     $scope.employees = result.blockItems;
                 $scope.totalCount = result.totalCount;
                 
-                 $timeout(function() {
-                    var b = document.getElementById('mainContent');
-                    //$log.debug(b.scrollTop + " " + b.scrollHeight);
-                    b.scrollTop = b.scrollHeight;
-                }, 1);
+                if (append)
+                {
+                    $timeout(function() {
+                        var b = document.getElementById('mainContent');
+                        b.scrollTop = b.scrollHeight;
+                    }, 1);
+                }
                                   
                 $scope.finishedLoading();
             }, function (error) {
@@ -63,8 +68,8 @@
         };
 
         $scope.loadMore = function() {
-            $stateParams.currentPage++;
-            $state.go('.', $stateParams);
+            $scope.currentPage++;
+            $scope.listRefresh(true);
         };
 
         $scope.nextPageDisabled = function() {
@@ -79,12 +84,30 @@
             //$log.debug("employeeListController.searchFilterChanged " + $scope.searchFilter);
             if ($scope.searchFilter.length > 1 || $scope.searchFilter.length < $scope.lastSearchFilter.length)
             {
-                $stateParams.searchFilter = $scope.searchFilter;
-                $state.go('.', $stateParams);
+                $scope.listRefresh(false);
             }
             $scope.lastSearchFilter = $scope.searchFilter;
         };
 
+        $scope.showDetails = function(employee)
+        {
+            $scope.saveState();
+            $state.go('.', $stateParams, { "location": false, "notify": false });
+            $stateParams.employeeId = employee.oid;
+            $state.go('.detail', $stateParams, { "location": false });
+        }
+        
+        $scope.saveState = function()
+        {
+            $stateParams.currentPage = $scope.currentPage;
+            $stateParams.itemsPerPage = $scope.itemsPerPage;
+            $stateParams.sortPredicate = $scope.predicate;
+            $stateParams.sortReverse = $scope.reverse;
+            $stateParams.searchFilter = $scope.searchFilter;
+            // location: true,false,'replace' ==> Update Browser URL yes/no and replace history
+            // $state.go('.', $stateParams, { "location": true }); 
+        }
+        
         $scope._buildODataFilter = function(userInput)
         {
             // $scope.dateInputFormat = "DD.MM.YYYY";
@@ -139,13 +162,14 @@
             $log.debug("employeeListController.init searchFilter=" + $stateParams.searchFilter + ", currentPage=" + $stateParams.currentPage,
                 "sortPredicate=" + $stateParams.sortPredicate + ",sortReverse=" + $stateParams.sortReverse);
             
-            $stateParams.currentPage = $stateParams.currentPage ? parseInt($stateParams.currentPage) : 0;
-            $stateParams.itemsPerPage = $stateParams.itemsPerPage ? parseInt($stateParams.itemsPerPage) : 10;
+            $scope.currentPage = $stateParams.currentPage = $stateParams.currentPage ? parseInt($stateParams.currentPage) : 0;
+            $scope.itemsPerPage = $stateParams.itemsPerPage = $stateParams.itemsPerPage ? parseInt($stateParams.itemsPerPage) : 10;
             $scope.predicate = $stateParams.sortPredicate = $stateParams.sortPredicate ? $stateParams.sortPredicate : 'personnelNumber';
             $scope.reverse = $stateParams.sortReverse = $stateParams.sortReverse ? ($stateParams.sortReverse == "true") : false;
             $scope.searchFilter = $stateParams.searchFilter = $stateParams.searchFilter ? $stateParams.searchFilter : '';
             
-            if ($scope.skip == NaN) $scope.skip = 0;
+            if ($scope.currentPage == NaN) $scope.currentPage = $stateParams.currentPage = 0;
+            if ($scope.itemsPerPage == NaN) $scope.itemsPerPage = $stateParams.itemsPerPage = 10;
             
             $scope.hasError = false;
             $scope.smallDevice = isBootstrapDeviceSize('xs'); 
@@ -161,6 +185,6 @@
 
         init();
     }
-
+    
     app.module.controller('employeeListController', employeeListController);
 })();
