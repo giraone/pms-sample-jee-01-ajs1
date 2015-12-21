@@ -3,12 +3,12 @@
 
     app.module.config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('dashboard', getState('dashboard', '/'))
-            .state('about', getStaticState('about', '/about'))
-            .state('testPage', getState('testPage', '/testPage'))
-            .state('costCenters', getState('costCenterList', '/costCenters'))
-            .state('costCenters.detail', getState('costCenterDetail', '/:costCenterId'))
-            .state('employees', getState('employeeList', '/employees?currentPage&itemsPerPage&sortPredicate&sortReverse&searchFilter', {
+            .state('dashboard', getState('dashboard', '/'), false)
+            .state('about', getStaticState('about', '/about'), false)
+            .state('testPage', getState('testPage', '/testPage'), false)
+            .state('costCenters', getState('costCenterList', '/costCenters'), false)
+            .state('costCenters.detail', getState('costCenterDetail', '/:costCenterId'), false)
+            .state('employees', getState('employeeList', '/employees?currentPage&itemsPerPage&sortPredicate&sortReverse&searchFilter', true, {
                 currentPage: {
                     value: '0',
                     squash: true
@@ -30,13 +30,18 @@
                     squash: true
                 }
             }))
-            .state('employees.detail', getState('employeeDetail', '/:employeeId'))
+            .state('employees.detail', getState('employeeDetail', '/:employeeId?currentTab'), true, {
+                currentTab: {
+                    value: '0',
+                    squash: true
+                }
+            })
         $urlRouterProvider.otherwise('/');
     });
 
     function getState(name, url, useFormFactor, params) {
         var templateUrl = 'app/' + name + '/' + name + '.html';
-        if (useFormFactor && window.innerWidth < window.innerHeight)
+        if (useFormFactor && (window.innerWidth < window.innerHeight))
         {
             templateUrl = 'app/' + name + '/' + name + '-portrait.html';
         }

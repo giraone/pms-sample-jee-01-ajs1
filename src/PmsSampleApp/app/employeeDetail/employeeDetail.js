@@ -22,7 +22,7 @@
         // construct the base class
         BaseDetailController.call(this, $scope, $document, $log, $translate, ngNotify);
         this.prototype = Object.create(BaseDetailController.prototype);
-        
+
         $scope.employee = $scope.employee || {};
         
         // We cannot use $scope.employee directly, because on an entity update, the selection will not be made (1)
@@ -38,11 +38,31 @@
         $scope.numberOfChildrenCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8' , '9'];
         $scope.numberOfChildrenValue = $scope.employee && $scope.employee.numberOfChildren ? $scope.employee.numberOfChildren.toString() : null;
  
-        // ISO 3166-1 alpha-2 country codes
+        // ISO 3166-1 alpha-2 country codes for nationality code
         $scope.nationalityCodes = ['DE', 'AT', 'CH', 'IT', 'US'];
- 
+
+        // ISO 3166-1 alpha-2 country codes for country address code
+        $scope.countryCodes = ['DE', 'AT', 'CH', 'IT', 'US'];
+
          // ISO 3166-3 country codes
         $scope.countryOfBirthCodes = ['DE', 'DDDE', 'AT', 'CH', 'IT', 'US'];
+
+        // Postal addresses (begin)
+        $scope.employee.postalAddresses = null;
+        $scope.currentPostalAddressIndex = null;
+        $scope.selectedTab = $stateParams.currentTab ? $stateParams.currentTab : 0;
+        $scope.selectTab = function (index) {
+            $log.debug('Change tab to ' + index);
+            if ($scope.selectedTab == 1 && $scope.employee && $scope.employee.oid && $scope.employee.postalAddresses == null)
+            {
+                $scope.loadAddresses();
+            }
+            $stateParams.currentTab = index;
+            // and use the router to change to detail view
+            $state.go('^.detail', $stateParams, { "location": true, "reload": true });
+        };
+        // Postal addresses (end)
+
                       
         $scope.save = function () {
             // Sanity check!
@@ -99,19 +119,116 @@
                     */
                     // Back to list
                     $log.debug('employeeDetailController.save BACK TO LIST ' + $stateParams.searchFilter);
-                    $state.go('employees', $stateParams, { "location": false });
+                    $state.go('employees', $stateParams, { "location": true });
                     //$window.history.back();
                 }, errorFunction);
         };
 
         $scope.cancel = function () {
-            $state.go('employees', $stateParams, { "location": false });
+            $log.debug('employeeDetailController.save BACK TO LIST ' + $stateParams.searchFilter);
+            $state.go('employees', $stateParams, { "location": true });
             //$window.history.back();
         };
-        
+
+        // Postal addresses (begin)
+
+        $scope.loadAddresses = function (wantedOid) {
+            EmployeesResource.listPostalAddresses($scope.employee.oid).$promise.then(function (result) {
+                $scope.employee.postalAddresses = result;
+                if ($scope.employee.postalAddresses.length > 0)
+                {
+                    $scope.currentPostalAddressIndex = 0;
+                    if (wantedOid)
+                    {
+                        result.forEach(function (v, i) {
+                            if (wantedOid == v) $scope.currentPostalAddressIndex = i });
+                    }
+                }
+                else
+                {
+                    $scope.currentPostalAddressIndex = null;
+                }
+            });
+        };
+
+        $scope.refreshAddresses = function () {
+            var currentAddressOid = null;
+            if ($scope.employee && $scope.employee.postalAddresses && $scope.currentPostalAddressIndex != null)
+            {
+                currentAddressOid = $scope.employee.postalAddresses[$scope.currentPostalAddressIndex].oid;
+            }
+            $scope.loadAddresses(currentAddressOid);
+        };
+
+        $scope.showAddress = function (addressIndex) {
+            $scope.currentPostalAddressIndex = addressIndex;
+        };
+
+        $scope.addAddress = function () {
+            var ranking = 1;
+            if ($scope.employee.postalAddresses)
+            {
+                ranking = $scope.employee.postalAddresses.length + 1;
+            }
+            var address = {
+                ranking: ranking,
+                countryCode: "DE"
+            };
+            $scope.startLoading();
+            EmployeesResource.addPostalAddress($scope.employee.oid, address).$promise.then(function (result) {
+                ngNotify.set($translate.instant('employeePostalAddress.addSuccess'), 'success');
+                $scope.loadAddresses();
+                $scope.finishedLoading();
+            }, function (error) {
+                $log.debug('employeeDetailController.addPostalAddress ERROR');
+                flash.setMessage({
+                    'type': 'error',
+                    'text': 'Cannot add new address to employee ' + $scope.employee.oid + '!'
+                });
+                $scope.finishedLoading();
+            });
+        };
+
+        $scope.saveAddress = function () {
+            $scope.startLoading();
+            var address = $scope.employee.postalAddresses[$scope.currentPostalAddressIndex];
+            EmployeesResource.updatePostalAddress($scope.employee.oid, address).$promise.then(function (result) {
+                ngNotify.set($translate.instant('employeePostalAddress.updateSuccess'), 'success');
+                $scope.loadAddresses();
+                $scope.finishedLoading();
+            }, function (error) {
+                $log.debug('employeeDetailController.savePostalAddress ERROR');
+                flash.setMessage({
+                    'type': 'error',
+                    'text': 'Cannot save address of employee ' + $scope.employee.oid + '!'
+                });
+                $scope.finishedLoading();
+            });
+        };
+
+        $scope.deleteAddress = function (addressIndex) {
+            var address = $scope.employee.postalAddresses[addressIndex];
+            $scope.startLoading();
+            EmployeesResource.deletePostalAddressById($scope.employee.oid, address.oid).$promise.then(function (result) {
+                ngNotify.set($translate.instant('employeePostalAddress.deleteSuccess'), 'success');
+                $scope.loadAddresses();
+                $scope.finishedLoading();
+            }, function (error) {
+                $log.debug('employeeDetailController.deleteAddress ERROR');
+                flash.setMessage({
+                    'type': 'error',
+                    'text': 'The address with oid ' + address.oid + ' of employee ' + $scope.employee.oid + 'could not be deleted!'
+                });
+                $scope.finishedLoading();
+            });
+        };
+
+        // Postal addresses (end)
+
         function init() {
              
-            $log.debug("employeeDetailController.init searchFilter=" + $stateParams.searchFilter + ", skip=" + $stateParams.skip);
+            $log.debug("employeeDetailController.init currentTab=" + $stateParams.currentTab
+                + ", searchFilter=" + $stateParams.searchFilter + ", skip=" + $stateParams.skip);
             $scope.startLoading();         
             CostCentersResource.listAll().$promise.then(function (result) {
                 $scope.costCenters = result;

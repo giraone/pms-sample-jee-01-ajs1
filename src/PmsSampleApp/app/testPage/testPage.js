@@ -21,9 +21,9 @@
     $scope.selectedTab = 0; //set selected tab to the 1st by default.
 
     $scope.selectTab = function (index) {
-      $log.debug('Change tab to ', index);
+      $log.debug('Change tab to ' + index);
       $scope.selectedTab = index;
-    }
+    };
 
     $scope.reset = function () {
       $scope.finishedLoading();

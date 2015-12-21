@@ -91,11 +91,16 @@
 
         $scope.showDetails = function(employee)
         {
+            // save current state (list filter, sort and paging) in state params
             $scope.saveState();
-            $state.go('.', $stateParams, { "location": false, "notify": false });
+
+            // add more state information (employee and first tab)
             $stateParams.employeeId = employee.oid;
-            $state.go('.detail', $stateParams, { "location": false });
-        }
+            $stateParams.currentTab = 0;
+
+            // and use the router to change to detail view
+            $state.go('.detail', $stateParams, { "location": 'replace' });
+        };
         
         $scope.saveState = function()
         {
@@ -104,9 +109,10 @@
             $stateParams.sortPredicate = $scope.predicate;
             $stateParams.sortReverse = $scope.reverse;
             $stateParams.searchFilter = $scope.searchFilter;
-            // location: true,false,'replace' ==> Update Browser URL yes/no and replace history
-            // $state.go('.', $stateParams, { "location": true }); 
-        }
+            // location: false,true,'replace' ==> Update Browser URL no/yes/yes and replace history
+            // inform router to store it (allows back button functionality), but without any action
+            $state.go('.', $stateParams, { "location": 'replace', "notify": false });
+        };
         
         $scope._buildODataFilter = function(userInput)
         {

@@ -25,7 +25,11 @@
             create: create,
             update: update,
             deleteById: deleteById,
-            summary: summary
+            summary: summary,
+            listPostalAddresses: listPostalAddresses,
+            addPostalAddress: addPostalAddress,
+            updatePostalAddress: updatePostalAddress,
+            deletePostalAddressById: deletePostalAddressById
         };
         var paramDef = {top:'@top', skip:'@skip',filter:'@filter'};
 
@@ -65,7 +69,7 @@
             $log.debug('EmployeesResource.create entity=' + entity);
             var r = $resource(baseUrl);
             var result = r.save(entity, function() {
-                $log.debug('EmployeesResource.create result=' + result);
+                $log.debug('EmployeesResource.create result=' + (result ? result.oid : "-"));
                 return result;
             });
             return result;
@@ -95,6 +99,44 @@
             var r = $resource(baseUrl + '/summary');
             var result = r.get(function() {
                 $log.debug('EmployeesResource.summary result=' + result.count);
+                return result;
+            });
+            return result;
+        }
+        function listPostalAddresses(employeeOid) {
+            $log.debug('EmployeesResource.listPostalAddresses employeeOid=' + employeeOid);
+            var r = $resource(baseUrl + '/:employeeOid/addresses', { employeeOid: '@employeeOid' });
+            var result = r.query({ employeeOid: employeeOid }, function() {
+                $log.debug('EmployeesResource.listPostalAddresses result=' + result);
+                return result;
+            });
+            return result;
+        }
+        function addPostalAddress(employeeOid, address) {
+            $log.debug('EmployeesResource.addPostalAddress employeeOid=' + employeeOid + ', address=' + address);
+            var r = $resource(baseUrl + '/:employeeOid/addresses', { employeeOid: '@employeeOid', addressOid: '@addressOid' });
+            var result = r.save({ employeeOid: employeeOid }, address, function() {
+                $log.debug('EmployeesResource.addPostalAddress result=' + (result ? result.oid : "-"));
+                return result;
+            });
+            return result;
+        }
+        function updatePostalAddress(employeeOid, address) {
+            $log.debug('EmployeesResource.updatePostalAddress employeeOid=' + employeeOid + ', address=' + address);
+            var r = $resource(baseUrl + '/:employeeOid/addresses/:addressOid',
+                { employeeOid: '@employeeOid', addressOid: '@addressOid' }, { 'update': { method: 'PUT' } }
+            );
+            var result = r.update({ employeeOid: employeeOid, addressOid: address.oid }, address, function() {
+                $log.debug('EmployeesResource.updatePostalAddress result=' + result);
+                return result;
+            });
+            return result;
+        }
+        function deletePostalAddressById(employeeOid, addressOid) {
+            $log.debug('EmployeesResource.deletePostalAddressById employeeOid=' + employeeOid + ', addressOid=' + addressOid);
+            var r = $resource(baseUrl + '/:employeeOid/addresses/:addressOid', { employeeOid: '@employeeOid', addressOid: '@addressOid' });
+            var result = r.remove({ employeeOid: employeeOid, addressOid: addressOid }, function() {
+                $log.debug('EmployeesResource.deletePostalAddressById result=' + result);
                 return result;
             });
             return result;
