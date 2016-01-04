@@ -14,10 +14,11 @@
      * @param $translate
      * @param {EmployeesResource} EmployeesResource
      * @param {CostCentersResource} CostCentersResource
+     * @param {CatalogResource} CatalogResource
      * @param ngNotify
      * @param flash
      */
-    function employeeDetailController($scope, $window, $document, $log, $state, $stateParams, $translate, EmployeesResource, CostCentersResource, ngNotify, flash) {
+    function employeeDetailController($scope, $window, $document, $log, $state, $stateParams, $translate, EmployeesResource, CostCentersResource, CatalogResource, ngNotify, flash) {
 
         // construct the base class
         BaseDetailController.call(this, $scope, $document, $log, $translate, ngNotify);
@@ -44,8 +45,10 @@
         // ISO 3166-1 alpha-2 country codes for country address code
         $scope.countryCodes = ['DE', 'AT', 'CH', 'IT', 'US'];
 
-         // ISO 3166-3 country codes
+         // ISO 3166-3 country codes - NO MORE USED - replaced by countryOfBirthList
         $scope.countryOfBirthCodes = ['DE', 'DDDE', 'AT', 'CH', 'IT', 'US'];
+        
+        $scope.countryOfBirthList = null;
 
         // Postal addresses (begin)
         $scope.employee.postalAddresses = null;
@@ -77,6 +80,7 @@
                 $scope.employee.numberOfChildren = parseInt($scope.numberOfChildrenValue);
             
             // Now keep the redundant costCenter.oid attribute in sync!
+            $log.debug('employeeCostCenterOid = ' + $scope.employeeCostCenterOid);
             if ($scope.employee.costCenter)
             {
                 $scope.employee.costCenter.oid = $scope.employeeCostCenterOid;
@@ -85,7 +89,7 @@
             {
                 $scope.employee.costCenter = { "oid": $scope.employeeCostCenterOid };
             }
-            // $log.debug('costCenter new oid = ' + $scope.employee.costCenter.oid);
+            $log.debug('costCenter new oid = ' + $scope.employee.costCenter.oid);
 
             var promise;
             var successMessage;
@@ -229,14 +233,22 @@
              
             $log.debug("employeeDetailController.init currentTab=" + $stateParams.currentTab
                 + ", searchFilter=" + $stateParams.searchFilter + ", skip=" + $stateParams.skip);
-            $scope.startLoading();         
+
+            $scope.startLoading();
+
+            CatalogResource.listAll('iso-3166-1-alpha2', $translate.instant("language")).$promise.then(function (result) {
+                $scope.countryOfBirthList = result;
+            });
+
             CostCentersResource.listAll().$promise.then(function (result) {
                 $scope.costCenters = result;
                 
                 if ($stateParams.employeeId) {
 
                     EmployeesResource.findById($stateParams.employeeId).$promise.then(function (result) {
+                        
                         $scope.employee = result;
+                        
                         // Convert number of children from integer to string
                         if ($scope.employee.numberOfChildren)
                         {
@@ -249,6 +261,7 @@
                         
                         // Now keep the redundant costCenter.oid attribute in sync!
                         $scope.employeeCostCenterOid = $scope.employee.costCenter ? $scope.employee.costCenter.oid : null;
+                        
                         $scope.finishedLoading();
                     }, function (error) {
                         $log.debug('employeeDetailController.findById ERROR');
@@ -262,7 +275,7 @@
                 else {
                     $scope.finishedLoading();
                 }
-            });        
+            });
         }
         
         init();

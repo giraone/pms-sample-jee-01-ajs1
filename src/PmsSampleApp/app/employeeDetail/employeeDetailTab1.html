@@ -141,8 +141,7 @@
                      class="control-label"></label>
               <select id="countryOfBirth" name="countryOfBirth" ng-model="employee.countryOfBirth"
                       class="form-control"
-                      ng-options="v as ('employeeDetails.countryOfBirth.value_' + v) | translate for v in countryOfBirthCodes"
-                      required>
+                      ng-options="v.code as v.text for v in countryOfBirthList">
                 <option value="" translate="employeeDetails.countryOfBirth.placeholder"></option>
               </select>
               <span class="glyphicon form-control-feedback"

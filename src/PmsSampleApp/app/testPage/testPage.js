@@ -1,120 +1,141 @@
 !function ($, jQuery, window, document) {
-  'use strict';
+    'use strict';
 
-  /**
-   * @public
-   * @constructor
-   *
-   * @param $scope
-   * @param $document
-   * @param $log
-   * @param { Object } projectConfig
-   * @param $resource
-   * @param { CostCentersResource } CostCentersResource
-   */
-  function TestPageController($scope, $document, $log, projectConfig, $resource, CostCentersResource) {
+    /**
+     * @public
+     * @constructor
+     *
+     * @param $scope
+     * @param $document
+     * @param $log
+     * @param { Object } projectConfig
+     * @param $resource
+     * @param { CostCentersResource } CostCentersResource
+     * @param { CatalogResource } CatalogResource
+     */
+    function TestPageController($scope, $document, $log, projectConfig, $resource, CostCentersResource, CatalogResource) {
 
-    $scope.baseUrl = projectConfig.baseUrl;
-    
-    $scope.bootstrapDeviceSize = getBootstrapDeviceSize();   
+        $scope.baseUrl = projectConfig.baseUrl;
 
-    $scope.selectedTab = 0; //set selected tab to the 1st by default.
+        $scope.bootstrapDeviceSize = getBootstrapDeviceSize();
 
-    $scope.selectTab = function (index) {
-      $log.debug('Change tab to ' + index);
-      $scope.selectedTab = index;
-    };
+        $scope.selectedTab = 0; //set selected tab to the 1st by default.
 
-    $scope.reset = function () {
-      $scope.finishedLoading();
-      $scope.neverUsed = true;
-      $scope.errorOnLastCall = false;
-      $scope.baseUrl = projectConfig.baseUrl;
-      $scope.input1 = 'CostCentersResource getVersion()=' + CostCentersResource.getVersion();
-      $scope.output1 = '- No results yet -';
-    };
+        $scope.selectTab = function (index) {
+            $log.debug('Change tab to ' + index);
+            $scope.selectedTab = index;
+        };
 
-    // Using Service for summary()
-    $scope.submit1 = function () {
-      $log.debug('Using Service for summary()', $scope.input1);
-      $scope.neverUsed = false;
-      $scope.startLoading();
+        $scope.reset = function () {
+            $scope.finishedLoading();
+            $scope.neverUsed = true;
+            $scope.errorOnLastCall = false;
+            $scope.baseUrl = projectConfig.baseUrl;
+            $scope.input1 = 'CostCentersResource getVersion()=' + CostCentersResource.getVersion();
+            $scope.output1 = '- No results yet -';
+        };
 
-      var resource = $resource($scope.baseUrl + '/costcenters/summary');
-      var summary = resource.get(function () {
-        $scope.finishedLoading();
-        $log.debug('Success submit1');
-        $scope.output1 = "summary.count=" + summary.count;
-      });
-    };
+        // Using Service for summary()
+        $scope.submit1 = function () {
+            $log.debug('Using Service for summary()', $scope.input1);
+            $scope.neverUsed = false;
+            $scope.startLoading();
 
-    // Using Service for listAll()
-    $scope.submit2 = function () {
-      $log.debug('Using Service for listAll()', $scope.input1);
-      $scope.neverUsed = false;
-      $scope.startLoading();
+            var resource = $resource($scope.baseUrl + '/costcenters/summary');
+            var summary = resource.get(function () {
+                $scope.finishedLoading();
+                $log.debug('Success submit1');
+                $scope.output1 = "summary.count=" + summary.count;
+            });
+        };
 
-      CostCentersResource.listAll().$promise.then(function (result) {
-        $scope.finishedLoading();
-        $log.debug('listAll OK');
-        $scope.output1 = "Items = " + result.length;
-        if (result.length > 0)
-          $scope.output1 += " , first=" + result[0].identification;
-      }, function (error) {
-        $scope.finishedLoading();
-        $log.debug('listAll ERROR ' + error);
-        $scope.output1 = error;
-        $scope.hasError = true;
-      });
-    };
+        // Using Service for listAll()
+        $scope.submit2 = function () {
+            $log.debug('Using Service for listAll()', $scope.input1);
+            $scope.neverUsed = false;
+            $scope.startLoading();
 
-    // Using $resource
-    $scope.submit3 = function () {
-      $log.debug('Using $resource', $scope.baseUrl);
-      $scope.neverUsed = false;
-      $scope.startLoading();
+            CostCentersResource.listAll().$promise.then(function (result) {
+                $scope.finishedLoading();
+                $log.debug('listAll OK');
+                $scope.output1 = "Items = " + result.length;
+                if (result.length > 0)
+                    $scope.output1 += " , first=" + result[0].identification;
+            }, function (error) {
+                $scope.finishedLoading();
+                $log.debug('listAll ERROR ' + error);
+                $scope.output1 = error;
+                $scope.hasError = true;
+            });
+        };
 
-      var resource = $resource($scope.baseUrl + '/costcenters');
-      var listOfCostCenters = resource.query(function () {
-        $scope.finishedLoading();
-        $log.debug('Using $resource', 'Success');
-        $scope.output1 = listOfCostCenters;
-      });
-    };
+        // Using $resource
+        $scope.submit3 = function () {
+            $log.debug('Using $resource', $scope.baseUrl);
+            $scope.neverUsed = false;
+            $scope.startLoading();
 
-    // Using Service for create()
-    $scope.submit4 = function () {
-      $log.debug('Using Service for create()', $scope.input1);
-      $scope.neverUsed = false;
-      $scope.startLoading();
+            var resource = $resource($scope.baseUrl + '/costcenters');
+            var listOfCostCenters = resource.query(function () {
+                $scope.finishedLoading();
+                $log.debug('Using $resource', 'Success');
+                $scope.output1 = listOfCostCenters;
+            });
+        };
 
-      var costCenter = { identification: "K00020", description: "Test" };
-      CostCentersResource.create(costCenter).$promise.then(function (result) {
-        $scope.finishedLoading();
-        $log.debug('create OK ' + result);
-        $scope.output1 = "Items = " + result.length;
-        if (result.length > 0)
-          $scope.output1 += " , first=" + result[0].identification;
-      }, function (error) {
-        $scope.finishedLoading();
-        $log.debug('create ERROR ' + error);
-        $scope.output1 = "Status = " + error.status;
-        $scope.hasError = true;
-      });
-    };
-    
-    $scope.startLoading = function() {
-      $document[0].body.style.cursor='wait';
-      $scope.loading = true;
-    };
-    
-    $scope.finishedLoading = function() {
-      $document[0].body.style.cursor='default';
-      $scope.loading = false;
-    };
-    
-    $scope.reset();
-  }
+        // Using Service for create()
+        $scope.submit4 = function () {
+            $log.debug('Using Service for create()', $scope.input1);
+            $scope.neverUsed = false;
+            $scope.startLoading();
 
-  app.module.controller('testPageController', TestPageController);
+            var costCenter = {identification: "K00020", description: "Test"};
+            CostCentersResource.create(costCenter).$promise.then(function (result) {
+                $scope.finishedLoading();
+                $log.debug('create OK ' + result);
+                $scope.output1 = "Items = " + result.length;
+                if (result.length > 0)
+                    $scope.output1 += " , first=" + result[0].identification;
+            }, function (error) {
+                $scope.finishedLoading();
+                $log.debug('create ERROR ' + error);
+                $scope.output1 = "Status = " + error.status;
+                $scope.hasError = true;
+            });
+        };
+
+        // Using Service for listAll()
+        $scope.submit5 = function () {
+            $log.debug('Catalog listAll()', $scope.input1);
+            $scope.neverUsed = false;
+            $scope.startLoading();
+
+            CatalogResource.listAll('iso-3166-1-alpha2', 'en').$promise.then(function (result) {
+                $scope.finishedLoading();
+                $log.debug('listAll OK');
+                $scope.output1 = "Items = " + result.length;
+                if (result.length > 0)
+                    $scope.output1 += " , first=" + result[0].code + " " + result[0].text;
+            }, function (error) {
+                $scope.finishedLoading();
+                $log.debug('listAll ERROR ' + error);
+                $scope.output1 = error;
+                $scope.hasError = true;
+            });
+        };
+
+        $scope.startLoading = function () {
+            $document[0].body.style.cursor = 'wait';
+            $scope.loading = true;
+        };
+
+        $scope.finishedLoading = function () {
+            $document[0].body.style.cursor = 'default';
+            $scope.loading = false;
+        };
+
+        $scope.reset();
+    }
+
+    app.module.controller('testPageController', TestPageController);
 }();

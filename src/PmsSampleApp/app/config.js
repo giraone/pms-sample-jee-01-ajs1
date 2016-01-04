@@ -26,11 +26,14 @@
 
     app.module.constant(
         'projectConfig', {
-            "baseUrl": 'api'
-            // "baseUrl": '/PmsSample/api'
-            // "baseUrl": 'http://localhost:8080/PmsSample/api'
-            // "baseUrl": 'http://pmssamplejee01-giraone.rhcloud.com/PmsSample/api'
-            // "baseUrl": 'http://pmssamplejee1.eu-gb.mybluemix.net/api'
+            // baseUrl: 'api'
+            // baseUrl: '/PmsSample/api',
+            baseUrl: 'http://localhost:8080/PmsSample/api',
+            // baseUrl: 'http://pmssamplejee01-giraone.rhcloud.com/PmsSample/api',
+            // baseUrl: 'http://pmssamplejee1.eu-gb.mybluemix.net/api',
+
+            catalogBaseUrl: 'http://localhost:8080/CatalogService/api/catalogs'
+            //catalogBaseUrl: 'http://catalogjee1.eu-gb.mybluemix.net/api/catalogs'
         }
     );
 
