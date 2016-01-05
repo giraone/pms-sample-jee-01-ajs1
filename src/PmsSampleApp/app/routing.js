@@ -30,12 +30,12 @@
                     squash: true
                 }
             }))
-            .state('employees.detail', getState('employeeDetail', '/:employeeId?currentTab'), true, {
+            .state('employees.detail', getState('employeeDetail', '/:employeeId?currentTab', true, {
                 currentTab: {
                     value: '0',
                     squash: true
                 }
-            })
+            }))
         $urlRouterProvider.otherwise('/');
     });
 
@@ -45,6 +45,7 @@
         {
             templateUrl = 'app/' + name + '/' + name + '-portrait.html';
         }
+        
         return {
             url: url || '/' + name,
             params: params,

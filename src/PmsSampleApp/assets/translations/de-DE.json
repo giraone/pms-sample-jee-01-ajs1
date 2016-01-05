@@ -13,7 +13,8 @@
     "requestError": "Anfrage konnte nicht ausgeführt werden! Bitte probieren Sie es später noch einmal.",
     "requestErrorUnprocessable": "Speichern konnte nicht ausgeführt werden! Schlüssel nicht eindeutig.",
     "requestErrorConflict": "Speichern konnte nicht ausgeführt werden! Daten wurde von einem anderen Anwender geändert und sind nicht mehr aktuell.",
-    "showMoreButton": "Mehr anzeigen - Aktuell {{from}} bis {{to}} von {{total}}"
+    "showMoreButton": "Mehr anzeigen - Aktuell {{from}} bis {{to}} von {{total}}",
+    "listRefresh": "Liste aktualisieren"
   },
   "globals": {
     "dateFormatMedium": "{{date|date:'dd.MM.yyyy'}}",
@@ -77,6 +78,8 @@
     "personnelNumber": "Personalnummer",
     "personnelNumberShort": "PNR",
     "name": "Name",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
     "dateOfBirth": "Geburtsdatum",
     "dateOfBirthShort": "Geb.dat.",
     "costCenter": "Kostenstelle",
@@ -171,7 +174,8 @@
     "deleteSuccess": "Ausgewählte Adresse des Mitarbeiters wurde gelöscht.",
     "noAddresses": "Keine Adressen hinterlegt!",
     "ranking": {
-      "label": "Reihenfolge"
+      "label": "Reihenfolge",
+      "labelShort": "#"
     },
     "address": {
       "label": "Adresse"

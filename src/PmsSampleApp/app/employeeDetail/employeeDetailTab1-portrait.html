@@ -9,9 +9,8 @@
       <!-- form start -->
       <form role="form" name="employeeDetailForm" ng-submit="save()">
         <div class="box-body">
-            
-          <div class="row">
-            <div class="col-xs-6 form-group" ng-show="!employee.oid"
+
+            <div class="col-xs-12 form-group" ng-show="!employee.oid"
                  ng-class="{'has-success': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$valid, 'has-error': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}">
               <label for="personnelNumber" translate="employeeDetails.personnelNumber.label"
                      class="control-label"></label>
@@ -21,10 +20,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
             </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-xs-6 form-group"
+
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.lastName.$dirty && employeeDetailForm.lastName.$valid, 'has-error': employeeDetailForm.lastName.$dirty && employeeDetailForm.lastName.$invalid}">
               <label for="lastName" translate="employeeDetails.lastName.label" class="control-label"></label>
               <input id="lastName" name="lastName" ng-model="employee.lastName"
@@ -33,7 +30,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeDetailForm.lastName.$dirty && employeeDetailForm.lastName.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
             </div>
-            <div class="col-xs-6 form-group"
+            
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$valid, 'has-error': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$invalid}">
               <label for="firstName" translate="employeeDetails.firstName.label" class="control-label"></label>
               <input id="firstName" name="firstName" ng-model="employee.firstName"
@@ -42,10 +40,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col-xs-6 form-group"
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.gender.$dirty && employeeDetailForm.gender.$valid, 'has-error': employeeDetailForm.gender.$dirty && employeeDetailForm.gender.$invalid}">
               <label for="gender" translate="employeeDetails.gender.label" class="control-label"></label>
               <select id="gender" name="gender" ng-model="employee.gender"
@@ -56,7 +52,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeDetailForm.firstName.$dirty && employeeDetailForm.firstName.$valid, 'glyphicon-remove': employeeDetailForm.personnelNumber.$dirty && employeeDetailForm.personnelNumber.$invalid}"></span>
             </div>
-            <div class="col-xs-6 form-group"
+            
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$valid, 'has-error': employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$invalid}">
               <label for="dateOfBirth" translate="employeeDetails.dateOfBirth.label" class="control-label"></label>
               <date id="dateOfBirth" name="dateOfBirth" ng-model="employee.dateOfBirth"
@@ -68,10 +65,8 @@
                     ng-show="employeeDetailForm.dateOfBirth.$dirty && employeeDetailForm.dateOfBirth.$error.dateFormat"
                     translate="globals.dateFormatMediumInValid"></span>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col-xs-6 form-group"
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$valid, 'has-error': employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$invalid}">
               <label for="dateOfEntry" translate="employeeDetails.dateOfEntry.label" class="control-label"></label>
               <date id="dateOfEntry" name="dateOfEntry" ng-model="employee.dateOfEntry"
@@ -83,7 +78,8 @@
                     ng-show="employeeDetailForm.dateOfEntry.$dirty && employeeDetailForm.dateOfEntry.$error.dateFormat"
                     translate="globals.dateFormatMediumInValid"></span>
             </div>
-            <div class="col-xs-6 form-group"
+            
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$valid, 'has-error': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$invalid}">
               <label for="costCenter" translate="employeeDetails.costCenter.label" class="control-label"></label>
               <select id="costCenter" name="costCenter" ng-model="employeeCostCenterOid" ng-change="changeEmployeeCostCenterOid(employeeCostCenterOid)"
@@ -94,10 +90,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$valid, 'glyphicon-remove': employeeDetailForm.costCenter.$dirty && employeeDetailForm.costCenter.$invalid}"></span>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col-xs-6 form-group"
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.maritalStatus.$dirty && employeeDetailForm.maritalStatus.$valid, 'has-error': employeeDetailForm.maritalStatus.$dirty && employeeDetailForm.maritalStatus.$invalid}">
               <label for="maritalStatus" translate="employeeDetails.maritalStatus.label" class="control-label"></label>
               <select id="maritalStatus" name="maritalStatus" ng-model="employee.maritalStatus"
@@ -108,7 +102,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeDetailForm.maritalStatus.$dirty && employeeDetailForm.maritalStatus.$valid, 'glyphicon-remove': employeeDetailForm.maritalStatus.$dirty && employeeDetailForm.maritalStatus.$invalid}"></span>
             </div>
-            <div class="col-xs-6 form-group"
+            
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.numberOfChildren.$dirty && employeeDetailForm.numberOfChildren.$valid, 'has-error': employeeDetailForm.numberOfChildren.$dirty && employeeDetailForm.numberOfChildren.$invalid}">
               <label for="numberOfChildren" translate="employeeDetails.numberOfChildren.label" class="control-label"></label>
               <select id="numberOfChildren" name="numberOfChildren" ng-model="numberOfChildrenValue" ng-change="changeNumberOfChildrenValue(numberOfChildrenValue)"
@@ -119,10 +114,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeDetailForm.numberOfChildren.$dirty && employeeDetailForm.numberOfChildren.$valid, 'glyphicon-remove': employeeDetailForm.numberOfChildren.$dirty && employeeDetailForm.numberOfChildren.$invalid}"></span>
             </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-xs-6 form-group"
+
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$valid, 'has-error': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$invalid}">
               <label for="nationalityCode" translate="employeeDetails.nationalityCode.label" class="control-label"></label>
               <select id="nationalityCode" name="nationalityCode" ng-model="employee.nationalityCode"
@@ -134,7 +127,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$valid, 'glyphicon-remove': employeeDetailForm.nationalityCode.$dirty && employeeDetailForm.nationalityCode.$invalid}"></span>
             </div>
-            <div class="col-xs-6 form-group"
+            
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeDetailForm.countryOfBirth.$dirty && employeeDetailForm.countryOfBirth.$valid, 'has-error': employeeDetailForm.countryOfBirth.$dirty && employeeDetailForm.countryOfBirth.$invalid}">
               <label for="countryOfBirth" translate="employeeDetails.countryOfBirth.label" class="control-label"></label>
               <select id="countryOfBirth" name="countryOfBirth" ng-model="employee.countryOfBirth"
@@ -145,7 +139,6 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeDetailForm.countryOfBirth.$dirty && employeeDetailForm.countryOfBirth.$valid, 'glyphicon-remove': employeeDetailForm.countryOfBirth.$dirty && employeeDetailForm.countryOfBirth.$invalid}"></span>
             </div>
-          </div>
 
         </div>
         <!-- /.box-body -->

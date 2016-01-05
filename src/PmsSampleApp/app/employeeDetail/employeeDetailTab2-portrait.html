@@ -7,12 +7,11 @@
       </div>
       <!-- /.box-header -->
 
-      <div class="row">
         <div class="col-xs-8">
           <table class="table table-condensed table-striped table-bordered table-hover" ng-if="employee.postalAddresses">
             <thead>
             <tr>
-              <th translate="employeePostalAddress.ranking.label"></th>
+              <th translate="employeePostalAddress.ranking.labelShort"></th>
               <th translate="employeePostalAddress.address.label"></th>
               <th>&nbsp;</th>
             </tr>
@@ -26,33 +25,31 @@
                 {{postalAddress.countryCode}}
               </td>
               <td><a class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="deleteAddress($index)"
-                title="{{ 'common.delete' | translate }}">{{ 'common.delete' | translate }}</a></td>
+                title="{{ 'common.delete' | translate }}"><span class="fa fa-remove"></span></a></td>
             </tr>
             </tbody>
           </table>
           <div class="alert alert-info" ng-if="employee.postalAddresses.length === 0" translate="employeePostalAddress.noAddresses"></div>
         </div>
         <div class="col-xs-4">
-          <a class="btn btn-success" style="width:80%" ng-disabled="loading"
+          <a class="btn btn-success" style="width:80%" ng-disabled="loading || employeeAddressForm.$invalid || employeeAddressForm.$pristine"
             ng-click="addAddress()" title="{{ 'employeePostalAddress.add' | translate }}">
-            <span class="fa fa-plus"></span> <span translate="employeePostalAddress.add"></span></a>
+            <span class="fa fa-plus"></span></span></a>
           <br />
           <a class="btn btn-success" style="width:80%" ng-disabled="!employee.postalAddresses || loading || employeeAddressForm.$invalid || employeeAddressForm.$pristine"
             ng-click="saveAddress()" title="{{ 'employeePostalAddress.save' | translate }}">
-            <span class="fa fa-save"></span> <span translate="employeePostalAddress.save"></span></a>
+            <span class="fa fa-save"></span></a>
           <br />
           <a class="btn btn-success" style="width:80%" ng-disabled="!employee.postalAddresses || loading || employeeAddressForm.$pristine"
             ng-click="refreshAddresses()" title="{{ 'employeePostalAddress.refresh' | translate }}">
-            <span class="fa fa-refresh"></span> <span translate="employeePostalAddress.refresh"></span></a>
+            <span class="fa fa-refresh"></span></a>
         </div>
-      </div>
 
       <!-- form start -->
       <form role="form" name="employeeAddressForm" ng-submit="save()">
         <div class="box-body">
 
-          <div class="row">
-            <div class="col-xs-6 form-group"
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeAddressForm.postalCode.$dirty && employeeAddressForm.postalCode.$valid, 'has-error': employeeAddressForm.postalCode.$dirty && employeeAddressForm.postalCode.$invalid}">
               <label for="postalCode" translate="employeePostalAddress.postalCode.label"
                      class="control-label"></label>
@@ -62,7 +59,7 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeAddressForm.postalCode.$dirty && employeeAddressForm.postalCode.$valid, 'glyphicon-remove': employeeAddressForm.postalCode.$dirty && employeeAddressForm.postalCode.$invalid}"></span>
             </div>
-            <div class="col-xs-6 form-group"
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeAddressForm.city.$dirty && employeeAddressForm.city.$valid, 'has-error': employeeAddressForm.city.$dirty && employeeAddressForm.city.$invalid}">
               <label for="city" translate="employeePostalAddress.city.label"
                      class="control-label"></label>
@@ -72,10 +69,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeAddressForm.city.$dirty && employeeAddressForm.city.$valid, 'glyphicon-remove': employeeAddressForm.city.$dirty && employeeAddressForm.city.$invalid}"></span>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col-xs-6 form-group"
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeAddressForm.street.$dirty && employeeAddressForm.street.$valid, 'has-error': employeeAddressForm.street.$dirty && employeeAddressForm.street.$invalid}">
               <label for="street" translate="employeePostalAddress.street.label"
                      class="control-label"></label>
@@ -85,7 +80,7 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeAddressForm.street.$dirty && employeeAddressForm.street.$valid, 'glyphicon-remove': employeeAddressForm.street.$dirty && employeeAddressForm.street.$invalid}"></span>
             </div>
-            <div class="col-xs-6 form-group"
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeAddressForm.houseNumber.$dirty && employeeAddressForm.houseNumber.$valid, 'has-error': employeeAddressForm.houseNumber.$dirty && employeeAddressForm.houseNumber.$invalid}">
               <label for="houseNumber" translate="employeePostalAddress.houseNumber.label"
                      class="control-label"></label>
@@ -95,10 +90,8 @@
               <span class="glyphicon form-control-feedback"
                     ng-class="{'glyphicon-ok': employeeAddressForm.houseNumber.$dirty && employeeAddressForm.houseNumber.$valid, 'glyphicon-remove': employeeAddressForm.houseNumber.$dirty && employeeAddressForm.houseNumber.$invalid}"></span>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col-xs-6 form-group"
+            <div class="col-xs-12 form-group"
                  ng-class="{'has-success': employeeAddressForm.countryOfBirth.$dirty && employeeAddressForm.countryOfBirth.$valid, 'has-error': employeeAddressForm.countryOfBirth.$dirty && employeeAddressForm.countryOfBirth.$invalid}">
               <label for="countryCode" translate="employeePostalAddress.countryCode.label"
                      class="control-label"></label>
@@ -111,9 +104,8 @@
                 <span class="glyphicon form-control-feedback"
                       ng-class="{'glyphicon-ok': employeeAddressForm.countryOfBirth.$dirty && employeeAddressForm.countryOfBirth.$valid, 'glyphicon-remove': employeeAddressForm.countryOfBirth.$dirty && employeeAddressForm.countryOfBirth.$invalid}"></span>
             </div>
-          </div>
+
         </div>
-        
         <!-- /.box-body -->
       </form>
     </div>

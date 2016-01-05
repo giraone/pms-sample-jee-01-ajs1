@@ -13,7 +13,8 @@
     "requestError": "Request failed! Please try again later.",
     "requestErrorUnprocessable": "Cannot store data! Duplicate key attributes.",
     "requestErrorConflict": "Cannot store data! Data was modified by somebody else and is not up-to-date.",
-    "showMoreButton": "Show more - Currently {{from}} to {{to}} of {{total}}"
+    "showMoreButton": "Show more - Currently {{from}} to {{to}} of {{total}}",
+    "listRefresh": "Refresh the list"
   },
   "globals": {
     "dateFormatMedium": "{{date|date:'MM/dd/yyyy'}}",
@@ -79,6 +80,8 @@
     "personnelNumber": "Personnel Number",
     "personnelNumberShort": "P#",
     "name": "Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
     "dateOfBirth": "Date of Birth",
     "dateOfBirthShort": "DoB",
     "costCenter": "Cost center",
@@ -171,7 +174,8 @@
     "deleteSuccess": "Selected address of employee was deleted.",
     "noAddresses": "No addresses stored yet!",
     "ranking": {
-      "label": "Order"
+      "label": "Order",
+      "labelShort": "#"
     },
     "address": {
       "label": "Postal Addresses"

@@ -26,17 +26,18 @@
 
         $scope.employee = $scope.employee || {};
         
-        // We cannot use $scope.employee directly, because on an entity update, the selection will not be made (1)
-        $scope.employeeCostCenterOid = $scope.employee && $scope.employee.costCenter ? $scope.employee.costCenter.oid : null;
-
+        // We cannot use $scope.employee.oid directly, because on an entity update, the selection will not be made
+        $scope.employeeCostCenterOid = $scope.employee && $scope.employee.costCenter
+            && $scope.employee.costCenter.oid != null ? $scope.employee.costCenter.oid.toString() : null;
+            
         // Gender codes
         $scope.genders = ['U', 'M', 'F', 'I'];
 
         // marital status codes
         $scope.maritalStatusCodes = ['U', 'M', 'W'];
         
-        // numberOfChildren codes (plain integer)
-        $scope.numberOfChildrenCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8' , '9'];
+        // numberOfChildren codes (plain integer represented as strings)
+        $scope.numberOfChildrenCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         $scope.numberOfChildrenValue = $scope.employee && $scope.employee.numberOfChildren ? $scope.employee.numberOfChildren.toString() : null;
  
         // ISO 3166-1 alpha-2 country codes for nationality code
@@ -48,48 +49,52 @@
          // ISO 3166-3 country codes - NO MORE USED - replaced by countryOfBirthList
         $scope.countryOfBirthCodes = ['DE', 'DDDE', 'AT', 'CH', 'IT', 'US'];
         
-        $scope.countryOfBirthList = null;
+        $scope.countryOfBirthList = [];
 
         // Postal addresses (begin)
         $scope.employee.postalAddresses = null;
         $scope.currentPostalAddressIndex = null;
         $scope.selectedTab = $stateParams.currentTab ? $stateParams.currentTab : 0;
-        $scope.selectTab = function (index) {
-            $log.debug('Change tab to ' + index);
-            if ($scope.selectedTab == 1 && $scope.employee && $scope.employee.oid && $scope.employee.postalAddresses == null)
+        
+        $scope.selectTab = function (index, reload) {
+            $log.debug('Change tab to ' + index + ' ' + $scope.employee.oid + ' ' + $scope.employee.postalAddresses);
+            if (index == 1 && $scope.employee && $scope.employee.oid && $scope.employee.postalAddresses == null)
             {
                 $scope.loadAddresses();
             }
             $stateParams.currentTab = index;
             // and use the router to change to detail view
-            $state.go('^.detail', $stateParams, { "location": true, "reload": true });
+            $state.go('^.detail', $stateParams, { "location": true, "reload": reload ? true : false });
         };
         // Postal addresses (end)
-
-                      
+          
+        $scope.changeNumberOfChildrenValue = function (value) {
+            $scope.numberOfChildrenValue = value;         
+            // Convert number of children from string to integer
+            if ($scope.numberOfChildrenValue == null || "" == $scope.numberOfChildrenValue)
+                $scope.employee.numberOfChildren = null;
+            else
+                $scope.employee.numberOfChildren = parseInt($scope.numberOfChildrenValue);
+        }
+          
+        $scope.changeEmployeeCostCenterOid = function (value) {
+            $scope.employeeCostCenterOid = value; 
+            // Convert cost center oid from string to integer       
+            if ($scope.employee.costCenter)
+            {
+                $scope.employee.costCenter.oid = parseInt($scope.employeeCostCenterOid);
+            }    
+            else
+            {
+                $scope.employee.costCenter = { "oid": parseInt($scope.employeeCostCenterOid) };
+            }
+        }
+        
         $scope.save = function () {
             // Sanity check!
             if (!$scope.employee && !$scope.employee.personnelNumber) {
                 return;
             }
-
-            // Convert number of children from string to integer
-            if ($scope.numberOfChildrenValue == null)
-                $scope.employee.numberOfChildren = null;
-            else
-                $scope.employee.numberOfChildren = parseInt($scope.numberOfChildrenValue);
-            
-            // Now keep the redundant costCenter.oid attribute in sync!
-            $log.debug('employeeCostCenterOid = ' + $scope.employeeCostCenterOid);
-            if ($scope.employee.costCenter)
-            {
-                $scope.employee.costCenter.oid = $scope.employeeCostCenterOid;
-            }    
-            else
-            {
-                $scope.employee.costCenter = { "oid": $scope.employeeCostCenterOid };
-            }
-            $log.debug('costCenter new oid = ' + $scope.employee.costCenter.oid);
 
             var promise;
             var successMessage;
@@ -137,8 +142,10 @@
         // Postal addresses (begin)
 
         $scope.loadAddresses = function (wantedOid) {
+            $log.debug('loadAddresses ' + wantedOid);
             EmployeesResource.listPostalAddresses($scope.employee.oid).$promise.then(function (result) {
                 $scope.employee.postalAddresses = result;
+                $log.debug('listPostalAddresses = ' + $scope.employee.postalAddresses.length);
                 if ($scope.employee.postalAddresses.length > 0)
                 {
                     $scope.currentPostalAddressIndex = 0;
@@ -196,18 +203,38 @@
         $scope.saveAddress = function () {
             $scope.startLoading();
             var address = $scope.employee.postalAddresses[$scope.currentPostalAddressIndex];
-            EmployeesResource.updatePostalAddress($scope.employee.oid, address).$promise.then(function (result) {
-                ngNotify.set($translate.instant('employeePostalAddress.updateSuccess'), 'success');
-                $scope.loadAddresses();
-                $scope.finishedLoading();
-            }, function (error) {
-                $log.debug('employeeDetailController.savePostalAddress ERROR');
-                flash.setMessage({
-                    'type': 'error',
-                    'text': 'Cannot save address of employee ' + $scope.employee.oid + '!'
+            if (address.oid)
+            {
+                EmployeesResource.updatePostalAddress($scope.employee.oid, address).$promise.then(function (result) {
+                    ngNotify.set($translate.instant('employeePostalAddress.updateSuccess'), 'success');
+                    $scope.loadAddresses();
+                    $scope.finishedLoading();
+                }, function (error) {
+                    $log.debug('employeeDetailController.savePostalAddress ERROR');
+                    flash.setMessage({
+                        'type': 'error',
+                        'text': 'Cannot save address of employee ' + $scope.employee.oid + '!'
+                    });
+                    $scope.finishedLoading();
                 });
-                $scope.finishedLoading();
-            });
+            }
+            // This is normally not needed - the address is currently created empty.
+            else
+            {
+                EmployeesResource.addPostalAddress($scope.employee.oid, address).$promise.then(function (result) {
+                    ngNotify.set($translate.instant('employeePostalAddress.addSuccess'), 'success');
+                    $scope.loadAddresses();
+                    $scope.finishedLoading();
+                }, function (error) {
+                    $log.debug('employeeDetailController.addPostalAddress ERROR');
+                    flash.setMessage({
+                        'type': 'error',
+                        'text': 'Cannot add address of employee ' + $scope.employee.oid + '!'
+                    });
+                    $scope.finishedLoading();
+                });
+            }
+            
         };
 
         $scope.deleteAddress = function (addressIndex) {
@@ -250,7 +277,7 @@
                         $scope.employee = result;
                         
                         // Convert number of children from integer to string
-                        if ($scope.employee.numberOfChildren)
+                        if ($scope.employee.numberOfChildren != null)
                         {
                             $scope.numberOfChildrenValue = $scope.employee.numberOfChildren.toString();
                         }
@@ -259,9 +286,15 @@
                             $scope.numberOfChildrenValue = null;
                         }
                         
-                        // Now keep the redundant costCenter.oid attribute in sync!
-                        $scope.employeeCostCenterOid = $scope.employee.costCenter ? $scope.employee.costCenter.oid : null;
-                        
+                        // Now keep the redundant costCenter.oid (integer!) attribute in sync!
+                        $scope.employeeCostCenterOid = $scope.employee.costCenter && $scope.employee.costCenter.oid != null ? $scope.employee.costCenter.oid.toString() : null;
+                                                         
+                        // Now check state params for the wanted tab
+                        $scope.selectTab($stateParams.currentTab);
+            
+                        $log.debug('$scope.employeeCostCenterOid = ' + $scope.employeeCostCenterOid);
+                        $log.debug('$scope.numberOfChildrenValue = ' + $scope.numberOfChildrenValue);
+            
                         $scope.finishedLoading();
                     }, function (error) {
                         $log.debug('employeeDetailController.findById ERROR');

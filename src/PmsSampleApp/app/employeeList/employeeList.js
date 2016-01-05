@@ -22,7 +22,7 @@
             $log.debug("orderBy = " + predicateName + ", $scope.predicate=" + $scope.predicate
                 + ", $scope.reverse=" + $scope.reverse + ", $stateParams.sortReverse=" + $stateParams.sortReverse);
             if (predicateName == $scope.predicate) {
-                $scope.reverse = !$stateParams.sortReverse;
+                $scope.reverse = !$scope.reverse;
             }
             else {
                 $scope.predicate = predicateName;
