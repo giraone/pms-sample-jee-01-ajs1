@@ -6,7 +6,7 @@ This is an Angular 1.X / Bootstrap 3 browser application to be used as a front-e
 * [NodeJS](http://nodejs.org) *v4.x.x*
 * [NPM](https://www.npmjs.com/) *npm 3.x.x.*
 * Git-Client (GitHub for Desktop)
-* WebStorm 10+ or any other suitable IDE 
+* WebStorm 10+, Visual Studio Code or any other suitable IDE 
 
 ## Setup
 * Download and install *node.js* and *npm*
