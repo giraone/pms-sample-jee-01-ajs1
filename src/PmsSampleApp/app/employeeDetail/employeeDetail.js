@@ -46,10 +46,17 @@
         // ISO 3166-1 alpha-2 country codes for country address code
         $scope.countryCodes = ['DE', 'AT', 'CH', 'IT', 'US'];
 
-         // ISO 3166-3 country codes - NO MORE USED - replaced by countryOfBirthList
-        $scope.countryOfBirthCodes = ['DE', 'DDDE', 'AT', 'CH', 'IT', 'US'];
-        
-        $scope.countryOfBirthList = [];
+        // Currently 3166-1 alpha-2 country codes, but should ISO 3166-3 country codes, to have old countries like DDR (code = DDDE)
+        // This is the resilent default fallback list only (if service is unavailable, the rest will work)     
+        if ($scope.employee && $scope.employee.countryOfBirth)
+        {
+            $scope.countryOfBirthList = [ { code: $scope.employee.countryOfBirth, text: $scope.employee.countryOfBirth } ];
+        }
+        else
+        {
+            $scope.countryOfBirthList = [ { code: 'DE', text: $translate.instant('employeeDetails.countryOfBirth.value_DE') } ];
+        }
+        $log.debug('#### countryOfBirthList = ' + $scope.countryOfBirthList);
 
         // Postal addresses (begin)
         $scope.employee.postalAddresses = null;
@@ -57,7 +64,6 @@
         $scope.selectedTab = $stateParams.currentTab ? $stateParams.currentTab : 0;
         
         $scope.selectTab = function (index, reload) {
-            $log.debug('Change tab to ' + index + ' ' + $scope.employee.oid + ' ' + $scope.employee.postalAddresses);
             if (index == 1 && $scope.employee && $scope.employee.oid && $scope.employee.postalAddresses == null)
             {
                 $scope.loadAddresses();
@@ -263,9 +269,13 @@
 
             $scope.startLoading();
 
-            CatalogResource.listAll('iso-3166-1-alpha2', $translate.instant("language")).$promise.then(function (result) {
-                $scope.countryOfBirthList = result;
-            });
+            CatalogResource.listAll('iso-3166-1-alpha2', $translate.instant("language")).$promise.then(
+                function (result) {
+                    $scope.countryOfBirthList = result;
+                }, function (error) {
+                    $log.debug('CatalogResource.listAll ERROR');
+                }
+            );
 
             CostCentersResource.listAll().$promise.then(function (result) {
                 $scope.costCenters = result;

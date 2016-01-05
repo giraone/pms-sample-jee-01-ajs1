@@ -107,7 +107,7 @@
             $stateParams.currentPage = $scope.currentPage;
             $stateParams.itemsPerPage = $scope.itemsPerPage;
             $stateParams.sortPredicate = $scope.predicate;
-            $stateParams.sortReverse = $scope.reverse;
+            $stateParams.sortReverse = '' + $scope.reverse;
             $stateParams.searchFilter = $scope.searchFilter;
             // location: false,true,'replace' ==> Update Browser URL no/yes/yes and replace history
             // inform router to store it (allows back button functionality), but without any action
@@ -166,12 +166,12 @@
     
         function init() {
             $log.debug("employeeListController.init searchFilter=" + $stateParams.searchFilter + ", currentPage=" + $stateParams.currentPage,
-                "sortPredicate=" + $stateParams.sortPredicate + ",sortReverse=" + $stateParams.sortReverse);
+                ", sortPredicate=" + $stateParams.sortPredicate + ", sortReverse=" + $stateParams.sortReverse);
             
             $scope.currentPage = $stateParams.currentPage = $stateParams.currentPage ? parseInt($stateParams.currentPage) : 0;
             $scope.itemsPerPage = $stateParams.itemsPerPage = $stateParams.itemsPerPage ? parseInt($stateParams.itemsPerPage) : 10;
             $scope.predicate = $stateParams.sortPredicate = $stateParams.sortPredicate ? $stateParams.sortPredicate : 'personnelNumber';
-            $scope.reverse = $stateParams.sortReverse = $stateParams.sortReverse ? ($stateParams.sortReverse == "true") : false;
+            $scope.reverse = $stateParams.sortReverse = $stateParams.sortReverse == 'true' ? true : false;
             $scope.searchFilter = $stateParams.searchFilter = $stateParams.searchFilter ? $stateParams.searchFilter : '';
             
             if ($scope.currentPage == NaN) $scope.currentPage = $stateParams.currentPage = 0;
