@@ -1,18 +1,18 @@
 <div class="row">
-  <div class="col-xs-3">
+  <div class="hidden-xs col-sm-2">
     <h4 translate="employeeList.title"></h4>
   </div>
-  <div class="col-xs-5">
+  <div class="col-xs-8 col-sm-5">
     <input id="searchFilter" type="text" class="form-control"
            ng-model="searchFilter" ng-change="searchFilterChanged()"
            placeholder="{{ 'employeeList.searchFilter_placeholder' | translate }}"
            title="{{ 'employeeList.searchFilter_tooltip' | translate }}">
   </div>
-  <div class="col-xs-4">
+  <div class="col-xs-4 col-sm-5 text-right">
     <a class="btn btn-success" ng-disabled="loading" ui-sref="employees.detail" title="{{ 'employeeList.add' | translate }}">
-      <span class="fa fa-plus"></span> <span translate="employeeList.add"></span></a>
+      <span class="fa fa-plus"></span> <span class="hidden-xs hidden-sm" translate="employeeList.add"></span></a>
     <a class="btn btn-success" ng-disabled="loading" ng-click="listRefresh()" title="{{ 'common.listRefresh' | translate }}">
-      <span class="fa fa-refresh"></span></a>
+      <span class="fa fa-refresh"></span> <span class="hidden-xs hidden-sm hidden-md" translate="common.listRefresh"></span></a>
   </div>
 </div>
 
@@ -21,19 +21,22 @@
     <table id="itemTable" class="table table-condensed table-striped table-bordered table-hover" ng-if="employees">
       <thead>
       <tr>
-        <th ng-click="orderBy('personnelNumber')"><span translate="employeeList.personnelNumberShort" ng-if="smallDevice"></span><span translate="employeeList.personnelNumber" ng-if="!smallDevice"></span> <span
+        <th ng-click="orderBy('personnelNumber')"><span class="hidden-md hidden-lg" translate="employeeList.personnelNumberShort"></span><span class="hidden-xs hidden-sm" translate="employeeList.personnelNumber"></span> <span
             class="glyphicon pull-right"
             ng-class="{'glyphicon-none': predicate!='personnelNumber', 'glyphicon-chevron-up': predicate=='personnelNumber'&&reverse, 'glyphicon-chevron-down': predicate=='personnelNumber'&&!reverse}"></span></th>
-        <th ng-click="orderBy('lastName')"><span translate="employeeList.lastName"></span> <span
+        <th class="hidden-md hidden-lg" ng-click="orderBy('lastName')"><span translate="employeeList.name"></span> <span
             class="glyphicon pull-right"
             ng-class="{'glyphicon-none': predicate!='lastName', 'glyphicon-chevron-up': predicate=='lastName'&&reverse, 'glyphicon-chevron-down': predicate=='lastName'&&!reverse}"></span></th>
-        <th ng-click="orderBy('firstName')"><span translate="employeeList.firstName"></span> <span
+        <th class="hidden-xs hidden-sm" ng-click="orderBy('lastName')"><span translate="employeeList.lastName"></span> <span
+            class="glyphicon pull-right"
+            ng-class="{'glyphicon-none': predicate!='lastName', 'glyphicon-chevron-up': predicate=='lastName'&&reverse, 'glyphicon-chevron-down': predicate=='lastName'&&!reverse}"></span></th>
+        <th class="hidden-xs hidden-sm" ng-click="orderBy('firstName')"><span translate="employeeList.firstName"></span> <span
             class="glyphicon pull-right"
             ng-class="{'glyphicon-none': predicate!='firstName', 'glyphicon-chevron-up': predicate=='firstName'&&reverse, 'glyphicon-chevron-down': predicate=='firstName'&&!reverse}"></span></th>
-        <th ng-click="orderBy('dateOfBirth')"><span translate="employeeList.dateOfBirthShort" ng-if="smallDevice"></span><span translate="employeeList.dateOfBirth" ng-if="!smallDevice"></span> <span
+        <th ng-click="orderBy('dateOfBirth')"><span class="hidden-md hidden-lg" translate="employeeList.dateOfBirthShort"></span><span class="hidden-xs hidden-sm" translate="employeeList.dateOfBirth"></span> <span
             class="glyphicon pull-right"
             ng-class="{'glyphicon-none': predicate!='dateOfBirth', 'glyphicon-chevron-up': predicate=='dateOfBirth'&&reverse, 'glyphicon-chevron-down': predicate=='dateOfBirth'&&!reverse}"></span></th>
-        <th ng-click="orderBy('costCenter.identification')"><span translate="employeeList.costCenterShort" ng-if="smallDevice"></span><span translate="employeeList.costCenter" ng-if="!smallDevice"></span> <span
+        <th ng-click="orderBy('costCenter.identification')"><span class="hidden-md hidden-lg" translate="employeeList.costCenterShort"></span><span class="hidden-xs hidden-sm" translate="employeeList.costCenter"></span> <span
             class="glyphicon pull-right"
             ng-class="{'glyphicon-none': predicate!='costCenter.identification', 'glyphicon-chevron-up': predicate=='costCenter.identification'&&reverse, 'glyphicon-chevron-down': predicate=='costCenter.identification'&&!reverse}"></span></th>
       </tr>
@@ -41,14 +44,15 @@
       <tbody>
       <tr ng-repeat="employee in employees" ng-click="showDetails(employee)">
         <td>{{employee.personnelNumber}}</td>
-        <td>{{employee.lastName}}</td>
-        <td>{{employee.firstName}}</td>
+        <td class="hidden-md hidden-lg">{{employee.lastName}}, {{employee.firstName}}</td>
+        <td class="hidden-xs hidden-sm">{{employee.lastName}}</td>
+        <td class="hidden-xs hidden-sm">{{employee.firstName}}</td>
         <td>{{ 'globals.dateFormatMedium' | translate:{date:employee.dateOfBirth} }}</td>
         <td>{{employee.costCenter.identification}}</td>
       </tr>
       </tbody>
       <tfoot>
-        <td colspan="4">
+        <td colspan="4">{{ itemsPerPage }} - {{ smallDevice }} -
           <a class="btn btn-success" ng-disabled="nextPageDisabled()" ng-click="loadMore()"><i class="fa fa-angle-double-right"></i>
             <span translate="common.showMoreButton" translate-value-from="0" translate-value-to="{{ employees.length }}" translate-value-total="{{ totalCount }}"></span></a>
         </td>

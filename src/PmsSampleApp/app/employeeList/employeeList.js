@@ -168,17 +168,18 @@
             $log.debug("employeeListController.init searchFilter=" + $stateParams.searchFilter + ", currentPage=" + $stateParams.currentPage,
                 ", sortPredicate=" + $stateParams.sortPredicate + ", sortReverse=" + $stateParams.sortReverse);
             
+            $scope.smallDevice = isBootstrapDeviceSize('xs') ? "Y" : "N";
+            var itemsPerPage = isBootstrapDeviceSize('xs') ? 10 : 15;
             $scope.currentPage = $stateParams.currentPage = $stateParams.currentPage ? parseInt($stateParams.currentPage) : 0;
-            $scope.itemsPerPage = $stateParams.itemsPerPage = $stateParams.itemsPerPage ? parseInt($stateParams.itemsPerPage) : 10;
+            $scope.itemsPerPage = $stateParams.itemsPerPage = $stateParams.itemsPerPage ? parseInt($stateParams.itemsPerPage) : itemsPerPage;
             $scope.predicate = $stateParams.sortPredicate = $stateParams.sortPredicate ? $stateParams.sortPredicate : 'personnelNumber';
             $scope.reverse = $stateParams.sortReverse = $stateParams.sortReverse == 'true' ? true : false;
             $scope.searchFilter = $stateParams.searchFilter = $stateParams.searchFilter ? $stateParams.searchFilter : '';
             
             if ($scope.currentPage == NaN) $scope.currentPage = $stateParams.currentPage = 0;
-            if ($scope.itemsPerPage == NaN) $scope.itemsPerPage = $stateParams.itemsPerPage = 10;
+            if ($scope.itemsPerPage == NaN) $scope.itemsPerPage = $stateParams.itemsPerPage = itemsPerPage;
             
             $scope.hasError = false;
-            $scope.smallDevice = isBootstrapDeviceSize('xs'); 
             $scope.bootstrapDeviceSize = getBootstrapDeviceSize();      
             $scope.employees = [];
             $scope.totalCount = 0;         

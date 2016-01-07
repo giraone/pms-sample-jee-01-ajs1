@@ -2,11 +2,11 @@
   <div class="col-xs-6">
     <h4 translate="costCenterList.title"></h4>
   </div>
-  <div class="col-xs-6">
-    <a class="btn btn-success" ng-disabled="loading" ui-sref="costCenters.detail" >
-      <span class="fa fa-plus"></span> <span translate="costCenterList.add"></span></a>
-    <a class="btn btn-success" ng-disabled="loading" ng-click="listRefresh()" >
-      <span class="fa fa-refresh"></span></a>
+  <div class="col-xs-6 text-right">
+    <a class="btn btn-success" ng-disabled="loading" ui-sref="costCenters.detail" title="{{ 'costCenterList.add' | translate }}">
+      <span class="fa fa-plus"></span> <span class="hidden-xs" translate="costCenterList.add"></span></a>
+    <a class="btn btn-success" ng-disabled="loading" ng-click="listRefresh()" title="{{ 'common.listRefresh' | translate }}">
+      <span class="fa fa-refresh"></span> <span class="hidden-xs hidden-sm" translate="common.listRefresh"></span></a>
   </div>
 </div>
 

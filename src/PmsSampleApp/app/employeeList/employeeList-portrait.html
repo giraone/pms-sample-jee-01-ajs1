@@ -1,20 +1,18 @@
 <div class="row">
-  <div class="col-xs-12">
+  <div class="hidden-xs col-sm-2">
     <h4 translate="employeeList.title"></h4>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-9">
+  <div class="col-xs-8 col-sm-5">
     <input id="searchFilter" type="text" class="form-control"
            ng-model="searchFilter" ng-change="searchFilterChanged()"
            placeholder="{{ 'employeeList.searchFilter_placeholder' | translate }}"
            title="{{ 'employeeList.searchFilter_tooltip' | translate }}">
   </div>
-  <div class="col-xs-3">
+  <div class="col-xs-4 col-sm-5 text-right">
     <a class="btn btn-success" ng-disabled="loading" ui-sref="employees.detail" title="{{ 'employeeList.add' | translate }}">
-      <span class="fa fa-plus"></span></a>
+      <span class="fa fa-plus"></span> <span class="hidden-xs hidden-sm" translate="employeeList.add"></span></a>
     <a class="btn btn-success" ng-disabled="loading" ng-click="listRefresh()" title="{{ 'common.listRefresh' | translate }}">
-      <span class="fa fa-refresh"></span></a>
+      <span class="fa fa-refresh"></span> <span class="hidden-xs hidden-sm hidden-md" translate="common.listRefresh"></span></a>
   </div>
 </div>
 

@@ -15,7 +15,8 @@
 
         $scope.listRefresh = function () {
             $scope.startLoading();
-            CostCentersResource.listAll(100, 0).$promise.then(function(result) {
+            // List all without paging, so use a large "top" value 10000
+            CostCentersResource.listAll(10000).$promise.then(function(result) {
                 $log.debug('costCenterListController.listAll OK');
                 $scope.hasError = false;
                 $scope.costCenters = result;
