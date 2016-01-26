@@ -58,21 +58,29 @@
         }
         $log.debug('#### countryOfBirthList = ' + $scope.countryOfBirthList);
 
-        // Postal addresses (begin)
-        $scope.employee.postalAddresses = null;
-        $scope.currentPostalAddressIndex = null;
-        $scope.selectedTab = $stateParams.currentTab ? $stateParams.currentTab : 0;
-        
+        $scope.selectedTab = $stateParams.currentTab ? $stateParams.currentTab : 0;     
         $scope.selectTab = function (index, reload) {
             if (index == 1 && $scope.employee && $scope.employee.oid && $scope.employee.postalAddresses == null)
             {
                 $scope.loadAddresses();
             }
+            if (index == 2 && $scope.employee && $scope.employee.oid && $scope.employee.documents == null)
+            {
+                $scope.loadDocuments();
+            }
             $stateParams.currentTab = index;
             // and use the router to change to detail view
             $state.go('^.detail', $stateParams, { "location": true, "reload": reload ? true : false });
         };
+        
+        // Postal addresses (begin)
+        $scope.employee.postalAddresses = null;
+        $scope.currentPostalAddressIndex = null;
         // Postal addresses (end)
+        
+        // Document (begin)
+        $scope.employee.documents = null;
+        // Documents (end)
           
         $scope.changeNumberOfChildrenValue = function (value) {
             $scope.numberOfChildrenValue = value;         
@@ -262,6 +270,41 @@
 
         // Postal addresses (end)
 
+        // Documents (begin)
+ 
+        $scope.loadDocuments = function (wantedOid) {
+            $log.debug('loadDocuments ' + wantedOid);
+            EmployeesResource.listDocuments($scope.employee.oid).$promise.then(function (result) {
+                $scope.employee.documents = result;
+                $log.debug('listDocuments = ' + $scope.employee.documents.length);
+            });
+        };
+        
+        $scope.showDocument = function (documentIndex) {
+            var document = $scope.employee.documents[documentIndex];
+            var url = EmployeesResource.getDocumentUrl($scope.employee.oid, document.oid);
+            $window.location.href = url;
+        };
+        
+        $scope.deleteDocument = function (documentIndex) {
+            var document = $scope.employee.documents[documentIndex];
+            $scope.startLoading();
+            EmployeesResource.deleteDocumentById($scope.employee.oid, document.oid).$promise.then(function (result) {
+                ngNotify.set($translate.instant('employeeDocument.deleteSuccess'), 'success');
+                $scope.loadDocuments();
+                $scope.finishedLoading();
+            }, function (error) {
+                $log.debug('employeeDetailController.deleteDocument ERROR');
+                flash.setMessage({
+                    'type': 'error',
+                    'text': 'The document with oid ' + document.oid + ' of employee ' + $scope.employee.oid + 'could not be deleted!'
+                });
+                $scope.finishedLoading();
+            });
+        };
+        
+        // Documents (end)
+        
         function init() {
              
             $log.debug("employeeDetailController.init currentTab=" + $stateParams.currentTab

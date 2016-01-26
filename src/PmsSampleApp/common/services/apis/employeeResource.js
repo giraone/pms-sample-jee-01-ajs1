@@ -29,7 +29,11 @@
             listPostalAddresses: listPostalAddresses,
             addPostalAddress: addPostalAddress,
             updatePostalAddress: updatePostalAddress,
-            deletePostalAddressById: deletePostalAddressById
+            deletePostalAddressById: deletePostalAddressById,
+            listDocuments: listDocuments,
+            addDocument: addDocument,
+            deleteDocumentById: deleteDocumentById,
+            getDocumentUrl: getDocumentUrl
         };
         var paramDef = {top:'@top', skip:'@skip',filter:'@filter'};
 
@@ -103,6 +107,7 @@
             });
             return result;
         }
+        
         function listPostalAddresses(employeeOid) {
             $log.debug('EmployeesResource.listPostalAddresses employeeOid=' + employeeOid);
             var r = $resource(baseUrl + '/:employeeOid/addresses', { employeeOid: '@employeeOid' });
@@ -140,6 +145,37 @@
                 return result;
             });
             return result;
+        }
+        
+        function listDocuments(employeeOid) {
+            $log.debug('EmployeesResource.listDocuments employeeOid=' + employeeOid);
+            var r = $resource(baseUrl + '/:employeeOid/documents', { employeeOid: '@employeeOid' });
+            var result = r.query({ employeeOid: employeeOid }, function() {
+                $log.debug('EmployeesResource.listDocuments result=' + result);
+                return result;
+            });
+            return result;
+        }
+        function addDocument(employeeOid, document) {
+            $log.debug('EmployeesResource.addDocument employeeOid=' + employeeOid + ', document=' + document);
+            var r = $resource(baseUrl + '/:employeeOid/documents', { employeeOid: '@employeeOid', documentOid: '@documentOid' });
+            var result = r.save({ employeeOid: employeeOid }, document, function() {
+                $log.debug('EmployeesResource.addDocument result=' + (result ? result.oid : "-"));
+                return result;
+            });
+            return result;
+        }
+        function deleteDocumentById(employeeOid, documentOid) {
+            $log.debug('EmployeesResource.deleteDocumentById employeeOid=' + employeeOid + ', documentOid=' + documentOid);
+            var r = $resource(baseUrl + '/:employeeOid/documents/:documentOid', { employeeOid: '@employeeOid', documentOid: '@documentOid' });
+            var result = r.remove({ employeeOid: employeeOid, documentOid: documentOid }, function() {
+                $log.debug('EmployeesResource.deleteDocumentById result=' + result);
+                return result;
+            });
+            return result;
+        }
+        function getDocumentUrl(employeeOid, documentOid) {
+            return baseUrl + '/' + employeeOid + '/documents/' + documentOid + '/content';
         }
     }
 })();

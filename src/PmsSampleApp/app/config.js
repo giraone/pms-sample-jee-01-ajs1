@@ -1,4 +1,4 @@
-!function ($, jQuery, window) {
+!function ($, jQuery) {
     'use strict';
 
     app.module.config(
@@ -31,8 +31,8 @@
             // baseUrl: 'http://localhost:8080/PmsSample/api',
             // baseUrl: 'http://pmssamplejee1.eu-gb.mybluemix.net/api',
 
-            //catalogBaseUrl: 'http://localhost:8080/CatalogService/api/catalogs'
-            catalogBaseUrl: 'http://catalogjee1.eu-gb.mybluemix.net/api/catalogs'
+            // catalogBaseUrl: 'http://localhost:8080/CatalogService/api/catalogs'
+            catalogBaseUrl: window.location.protocol + '//catalogjee1.eu-gb.mybluemix.net/api/catalogs'
         }
     );
 
