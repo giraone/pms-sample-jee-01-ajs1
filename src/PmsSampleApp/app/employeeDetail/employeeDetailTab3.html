@@ -18,7 +18,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="document in employee.documents" ng-click="showDocument($index)">
+            <tr ng-repeat="document in employee.documents">
               <td>{{ 'employeeDocument.businessType.' + document.businessType | translate }}</td>
               <td>{{ document.mimeType }}</td>
               <td>{{ document.byteSize }} Byte</td>
@@ -34,9 +34,21 @@
           <div class="alert alert-info" ng-if="employee.documents.length === 0" translate="employeeDocument.noDocuments"></div>
         </div>
         <div class="col-xs-4">
-          <a class="btn btn-success" style="width:80%" ng-disabled="loading"
-            ng-click="addDocument()" title="{{ 'employeeDocument.add' | translate }}">
-            <span class="fa fa-plus"></span> <span class="hidden-xs hidden-sm" translate="employeeDocument.add"></span></a>
+          <button type="file" class="btn btn-success" ngf-select="addDocument('image.portrait', $file, $invalidFiles)"
+            accept="image/*" ngf-max-height="2000" ngf-max-size="50MB" translate="employeeDocument.addPortrait"></button>
+        </div>
+        <div class="col-xs-4">
+          <button type="file" class="btn btn-success" ngf-select="addDocument('document.contract', $file, $invalidFiles)"
+            accept="application/pdf" ngf-max-height="2000" ngf-max-size="50MB" translate="employeeDocument.addContract"></button>
+        </div>
+        <div class="col-xs-4">
+            <div style="font:smaller">{{uploadDocument.name}} {{uploadErrFile.name}} {{uploadErrFile.$error}} {{uploadErrFile.$errorParam}}
+                <span class="progress" ng-show="uploadDocument.progress >= 0">
+                    <div style="width:{{uploadDocument.progress}}%"  
+                        ng-bind="uploadDocument.progress + '%'"></div>
+                </span>
+            </div>     
+            {{errorMsg}}
         </div>
       </div>
                

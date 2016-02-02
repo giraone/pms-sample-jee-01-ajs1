@@ -51,6 +51,7 @@ The gulp task will build the browser app. To get it working, please do the follo
 * [FastClick](https://github.com/ftlabs/fastclick), eliminates the [infamous 300 ms lag on touch devices](http://developer.telerik.com/featured/300-ms-click-delay-ios-8/)
 * [Modernizr](https://modernizr.com), feature detection used for date/time fields - *Version 2.8.3*
 * [Moment.js](http://momentjs.com/), parse, validate, manipulate, and display dates in JavaScript - *Version 2.10.6*
+* [ng-file-upload.js](http://ngmodules.org/modules/ng-file-upload), Directive to upload files with optional FileAPI shim for cross browser support - *Version 11.2.3*
 
 ## What does this sample show?
 * How to call REST (GET, POST, PUT) services using factories build with Angular's `$resource` service from *ngResource*.

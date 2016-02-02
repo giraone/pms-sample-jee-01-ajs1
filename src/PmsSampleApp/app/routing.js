@@ -6,6 +6,7 @@
             .state('dashboard', getState('dashboard', '/'), false)
             .state('about', getStaticState('about', '/about'), false)
             .state('testPage', getState('testPage', '/testPage'), false)
+            .state('testFileUpload', getState('testFileUpload', '/testFileUpload'), false)
             .state('costCenters', getState('costCenterList', '/costCenters'), false)
             .state('costCenters.detail', getState('costCenterDetail', '/:costCenterId'), false)
             .state('employees', getState('employeeList', '/employees?currentPage&itemsPerPage&sortPredicate&sortReverse&searchFilter', true, {

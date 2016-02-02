@@ -1,0 +1,22 @@
+<div class="container">
+  <div role="tabpanel">
+      
+  <h4>Upload document file</h4>
+  <button type="file" class="btn btn-success" ngf-select="uploadImageFile($file, $invalidFiles)"
+          accept="image/*" ngf-max-height="2000" ngf-max-size="50MB">Select Image (max. 50 MByte)</button>
+  <br />
+  <br />
+  <button type="file" class="btn btn-success" ngf-select="uploadPdfFile($file, $invalidFiles)"
+          accept="application/pdf" ngf-max-size="50MB">Select PDF (max. 50 MByte)</button>
+  <br />
+  <br />
+  File:
+  <div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
+      <span class="progress" ng-show="f.progress >= 0">
+          <div style="width:{{f.progress}}%"  
+               ng-bind="f.progress + '%'"></div>
+      </span>
+  </div>     
+  {{errorMsg}}
+  </div>
+ </div>

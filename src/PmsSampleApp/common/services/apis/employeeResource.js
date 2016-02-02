@@ -12,9 +12,10 @@
      * @param projectConfig
      * @param $log
      * @param $resource
+     * @param $q
      * @param measure
      */
-    function employeesResource(projectConfig, $log, $resource, measure) {
+    function employeesResource(projectConfig, $log, $resource, $q, measure) {
 
         var baseUrl = projectConfig.baseUrl + '/employees';
         var version = "1.0";
@@ -35,7 +36,7 @@
             deleteDocumentById: deleteDocumentById,
             getDocumentUrl: getDocumentUrl
         };
-        var paramDef = {top:'@top', skip:'@skip',filter:'@filter'};
+        var paramDef = {top:'@top', skip:'@skip', filter:'@filter'};
 
         return service;
 
@@ -119,9 +120,15 @@
         }
         function addPostalAddress(employeeOid, address) {
             $log.debug('EmployeesResource.addPostalAddress employeeOid=' + employeeOid + ', address=' + address);
-            var r = $resource(baseUrl + '/:employeeOid/addresses', { employeeOid: '@employeeOid', addressOid: '@addressOid' });
-            var result = r.save({ employeeOid: employeeOid }, address, function() {
-                $log.debug('EmployeesResource.addPostalAddress result=' + (result ? result.oid : "-"));
+            /* Sample with header
+            var r = $resource(baseUrl + '/:employeeOid/addresses',
+                { employeeOid: '@employeeOid' },
+                { save: { method: 'POST', headers: { 'X-TEST': 'value' } } }); 
+            */
+            var r = $resource(baseUrl + '/:employeeOid/addresses', { employeeOid: '@employeeOid' });          
+            var result = r.save({ employeeOid: employeeOid }, address, function(data, headers) {
+                $log.debug('EmployeesResource.addPostalAddress Location=' + headers('Location'));
+                result.location = headers('Location');
                 return result;
             });
             return result;
@@ -158,9 +165,10 @@
         }
         function addDocument(employeeOid, document) {
             $log.debug('EmployeesResource.addDocument employeeOid=' + employeeOid + ', document=' + document);
-            var r = $resource(baseUrl + '/:employeeOid/documents', { employeeOid: '@employeeOid', documentOid: '@documentOid' });
-            var result = r.save({ employeeOid: employeeOid }, document, function() {
-                $log.debug('EmployeesResource.addDocument result=' + (result ? result.oid : "-"));
+            var r = $resource(baseUrl + '/:employeeOid/documents', { employeeOid: '@employeeOid' });
+            var result = r.save({ employeeOid: employeeOid }, document, function(data, headers) {
+                $log.debug('EmployeesResource.addDocument location=' + headers('Location'));
+                result.location = headers('Location');
                 return result;
             });
             return result;

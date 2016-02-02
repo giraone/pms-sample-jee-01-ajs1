@@ -9,7 +9,8 @@
         'ngSanitize',
         'ngNotify',
         'angular-loading-bar',
-        'ngAnimate'
+        'ngAnimate',
+        'ngFileUpload'
     ]);
 
     FastClick.attach(document.body);

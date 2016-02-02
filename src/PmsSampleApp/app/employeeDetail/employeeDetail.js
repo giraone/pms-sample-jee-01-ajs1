@@ -17,8 +17,11 @@
      * @param {CatalogResource} CatalogResource
      * @param ngNotify
      * @param flash
+     * @param $timeout
+     * @param Upload
      */
-    function employeeDetailController($scope, $window, $document, $log, $state, $stateParams, $translate, EmployeesResource, CostCentersResource, CatalogResource, ngNotify, flash) {
+    function employeeDetailController($scope, $window, $document, $log, $state, $stateParams, $translate,
+        EmployeesResource, CostCentersResource, CatalogResource, ngNotify, flash, $timeout, Upload) {
 
         // construct the base class
         BaseDetailController.call(this, $scope, $document, $log, $translate, ngNotify);
@@ -156,7 +159,7 @@
         // Postal addresses (begin)
 
         $scope.loadAddresses = function (wantedOid) {
-            $log.debug('loadAddresses ' + wantedOid);
+            $log.debug('loadAddresses wantedOid=' + wantedOid);
             EmployeesResource.listPostalAddresses($scope.employee.oid).$promise.then(function (result) {
                 $scope.employee.postalAddresses = result;
                 $log.debug('listPostalAddresses = ' + $scope.employee.postalAddresses.length);
@@ -286,6 +289,41 @@
             $window.location.href = url;
         };
         
+        $scope.addDocument = function (businessType, file, errFiles) {
+            
+            $scope.uploadDocument = file;
+            $scope.uploadErrFile = errFiles && errFiles[0];
+            
+            var mimeType = businessType == "document.contract" ? "application/pdf" : file.type;
+            var document = { 'businessType': businessType, 'mimeType': mimeType };          
+            
+            EmployeesResource.addDocument($scope.employee.oid, document).$promise.then(function (result) {
+                file.result = result.location;
+                $scope.location = result.location;
+               
+                // Using HTML5 FileReader
+                var fileReader = new FileReader();
+                fileReader.readAsArrayBuffer(file);               
+                fileReader.onload = function(e) {          
+                    Upload.http({
+                        url: $scope.location + '/content',
+                        method: 'PUT',
+                        headers: { 'Content-Type': file.type, 'Content-Length': file.size },
+                        data: e.target.result
+                    }).then(function (response) {
+                        $scope.loadDocuments();
+                    }, function (response) {
+                        if (response.status > 0)
+                            $scope.errorMsg = response.status + ': ' + response.data;
+                    }, function (evt) {
+                        file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                    });                  
+                };               
+            }, function (error) {
+                $scope.uploadErrorMsg = error;
+            });
+        };
+        
         $scope.deleteDocument = function (documentIndex) {
             var document = $scope.employee.documents[documentIndex];
             $scope.startLoading();
@@ -294,7 +332,7 @@
                 $scope.loadDocuments();
                 $scope.finishedLoading();
             }, function (error) {
-                $log.debug('employeeDetailController.deleteDocument ERROR');
+                $log.debug('employeeDetailController.deleteDocument ERROR ' + error);
                 flash.setMessage({
                     'type': 'error',
                     'text': 'The document with oid ' + document.oid + ' of employee ' + $scope.employee.oid + 'could not be deleted!'
