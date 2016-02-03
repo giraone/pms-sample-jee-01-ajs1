@@ -10,7 +10,8 @@
         'ngNotify',
         'angular-loading-bar',
         'ngAnimate',
-        'ngFileUpload'
+        'ngFileUpload',
+        'byteSizeDisplayFilter'
     ]);
 
     FastClick.attach(document.body);

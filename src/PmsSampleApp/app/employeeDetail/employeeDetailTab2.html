@@ -11,7 +11,8 @@
           <table class="table table-condensed table-striped table-bordered table-hover" ng-if="employee.postalAddresses">
             <thead>
             <tr>
-              <th translate="employeePostalAddress.ranking.label"></th>
+              <th class="hidden-xs hidden-sm" translate="employeePostalAddress.ranking.label"></th>
+              <th class="hidden-md hidden-lg" translate="employeePostalAddress.ranking.labelShort"></th>
               <th translate="employeePostalAddress.address.label"></th>
               <th>&nbsp;</th>
             </tr>
@@ -25,7 +26,7 @@
                 {{postalAddress.countryCode}}
               </td>
               <td><a class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="deleteAddress($index)"
-                title="{{ 'common.delete' | translate }}">{{ 'common.delete' | translate }}</a></td>
+                title="{{ 'common.delete' | translate }}"><span class="fa fa-remove"></span> <span class="hidden-xs hidden-sm" translate="common.delete"></span></a></td>
             </tr>
             </tbody>
           </table>
@@ -34,15 +35,15 @@
         <div class="col-xs-4">
           <a class="btn btn-success" style="width:80%" ng-disabled="loading"
             ng-click="addAddress()" title="{{ 'employeePostalAddress.add' | translate }}">
-            <span class="fa fa-plus"></span> <span translate="employeePostalAddress.add"></span></a>
+            <span class="fa fa-plus"></span> <span class="hidden-xs hidden-sm" translate="employeePostalAddress.add"></span></a>
           <br />
           <a class="btn btn-success" style="width:80%" ng-disabled="!employee.postalAddresses || loading || employeeAddressForm.$invalid || employeeAddressForm.$pristine"
             ng-click="saveAddress()" title="{{ 'employeePostalAddress.save' | translate }}">
-            <span class="fa fa-save"></span> <span translate="employeePostalAddress.save"></span></a>
+            <span class="fa fa-save"></span> <span class="hidden-xs hidden-sm" translate="employeePostalAddress.save"></span></a>
           <br />
           <a class="btn btn-success" style="width:80%" ng-disabled="!employee.postalAddresses || loading || employeeAddressForm.$pristine"
             ng-click="refreshAddresses()" title="{{ 'employeePostalAddress.refresh' | translate }}">
-            <span class="fa fa-refresh"></span> <span translate="employeePostalAddress.refresh"></span></a>
+            <span class="fa fa-refresh"></span> <span class="hidden-xs hidden-sm" translate="employeePostalAddress.refresh"></span></a>
         </div>
       </div>
 

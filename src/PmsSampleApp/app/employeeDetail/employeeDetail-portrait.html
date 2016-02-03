@@ -6,6 +6,9 @@
     <li role="presentation" ng-click="selectTab(1)" ng-class="{'active':selectedTab == 1}">
       <a data-target="#tab" role="tab" data-toggle="tab">{{ 'employeeDetails.tab1Title' | translate }}</a>
     </li>
+    <li role="presentation" ng-click="selectTab(2)" ng-class="{'active':selectedTab == 2}">
+      <a data-target="#tab" role="tab" data-toggle="tab">{{ 'employeeDetails.tab2Title' | translate }}</a>
+    </li>
   </ul>
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="tab1" ng-show="selectedTab == 0">
@@ -15,6 +18,11 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="tab2" ng-show="selectedTab == 1">
       <ng-include src="'app/employeeDetail/employeeDetailTab2-portrait.html'"></ng-include>
+    </div>
+  </div>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="tab3" ng-show="selectedTab == 2">
+      <ng-include src="'app/employeeDetail/employeeDetailTab3-portrait.html'"></ng-include>
     </div>
   </div>
 </div>

@@ -17,16 +17,20 @@
      * @param {CatalogResource} CatalogResource
      * @param ngNotify
      * @param flash
+     * @param byteSizeDisplayFilter
      * @param $timeout
      * @param Upload
      */
     function employeeDetailController($scope, $window, $document, $log, $state, $stateParams, $translate,
-        EmployeesResource, CostCentersResource, CatalogResource, ngNotify, flash, $timeout, Upload) {
+        EmployeesResource, CostCentersResource, CatalogResource, ngNotify, flash, byteSizeDisplayFilter, $timeout, Upload) {
 
         // construct the base class
         BaseDetailController.call(this, $scope, $document, $log, $translate, ngNotify);
         this.prototype = Object.create(BaseDetailController.prototype);
 
+        // Custom filter for byte size display
+        $scope.byteSizeDisplay = byteSizeDisplayFilter();
+        
         $scope.employee = $scope.employee || {};
         
         // We cannot use $scope.employee.oid directly, because on an entity update, the selection will not be made

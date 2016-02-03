@@ -7,41 +7,44 @@
       <!-- /.box-header -->
 
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-9">
           <table class="table table-condensed table-striped table-bordered table-hover" ng-if="employee.documents">
             <thead>
             <tr>
+              <th>&nbsp;</th>
               <th translate="employeeDocument.businessType.label"></th>
-              <th translate="employeeDocument.mimeType.label"></th>
               <th translate="employeeDocument.byteSize.label"></th>
               <th>&nbsp;</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="document in employee.documents">
-              <td>{{ 'employeeDocument.businessType.' + document.businessType | translate }}</td>
-              <td>{{ document.mimeType }}</td>
-              <td>{{ document.byteSize }} Byte</td>
               <td>
+                  <span class="fa fa-file-text" ng-if="document.mimeType == 'application/pdf'" title="{{ document.mimeType }}"></span>
+                  <span class="fa fa-camera" ng-if="document.mimeType != 'application/pdf'" title="{{ document.mimeType }}"></span>
+              </td>
+              <td>{{ 'employeeDocument.businessType.' + document.businessType | translate }}</td>
+              <td>{{ document.byteSize | byteSizeDisplay }}</td>
+              <td>      
                   <a class="btn btn-success btn-sm" ng-disabled="loading" ng-click="showDocument($index)"
-                        title="{{ 'common.show' | translate }}">{{ 'common.show' | translate }}</a>
+                        title="{{ 'common.show' | translate }}"><span class="fa fa-binoculars"></span> <span class="hidden-xs hidden-sm" translate="common.show">"</span></a>
                   <a class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="deleteDocument($index)"
-                        title="{{ 'common.delete' | translate }}">{{ 'common.delete' | translate }}</a>
+                        title="{{ 'common.delete' | translate }}"><span class="fa fa-remove"></span> <span class="hidden-xs hidden-sm" translate="common.delete"></span></a>
               </td>
             </tr>
             </tbody>
           </table>
           <div class="alert alert-info" ng-if="employee.documents.length === 0" translate="employeeDocument.noDocuments"></div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
           <button type="file" class="btn btn-success" ngf-select="addDocument('image.portrait', $file, $invalidFiles)"
-            accept="image/*" ngf-max-height="2000" ngf-max-size="50MB" translate="employeeDocument.addPortrait"></button>
+            accept="image/*" ngf-max-height="2000" ngf-max-size="50MB"><span class="fa fa-plus"></span> <span class="fa fa-camera"></span> <span class="hidden-xs hidden-sm" translate="employeeDocument.addPortrait"></span></button>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
           <button type="file" class="btn btn-success" ngf-select="addDocument('document.contract', $file, $invalidFiles)"
-            accept="application/pdf" ngf-max-height="2000" ngf-max-size="50MB" translate="employeeDocument.addContract"></button>
+            accept="application/pdf" ngf-max-height="2000" ngf-max-size="50MB"><span class="fa fa-plus"> </span> <span class="fa fa-file-text"></span> <span class="hidden-xs hidden-sm" translate="employeeDocument.addContract"></button>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <div style="font:smaller">{{uploadDocument.name}} {{uploadErrFile.name}} {{uploadErrFile.$error}} {{uploadErrFile.$errorParam}}
                 <span class="progress" ng-show="uploadDocument.progress >= 0">
                     <div style="width:{{uploadDocument.progress}}%"  
@@ -51,7 +54,7 @@
             {{errorMsg}}
         </div>
       </div>
-              
+               
       <!-- /.box-body -->
     </div>
   </div>
